@@ -11,11 +11,12 @@ export default function Clientes() {
         { id: 2, nombre: "María López", email: "maria.lopez@email.com" },
         { id: 3, nombre: "Carlos Sánchez", email: "carlos.sanchez@email.com" }
     ]);
+    
     const [ form, setForm] = useState<Form>({
         nombre: '',
         email: ''
     });
-    
+
     const [edit, setEdit] = useState<Clientes | null>(null)
 
     
