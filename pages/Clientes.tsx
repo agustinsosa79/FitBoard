@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ClientForm } from "../components/ClientForm";
 import { Clientes, Form} from "../Types/cliente";
 import { ListaClientes } from "../components/ListaClientes";
@@ -6,6 +6,10 @@ import { ClienteModal } from "../components/ClienteModal";
 import { useLocalStorageClientes } from "../hooks/useLocalStorageClientes";
 
 
+
+
+const normalizar = (texto: string) =>
+    texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
 
 export default function Clientes() {
     const [clientes, setClientes] = useLocalStorageClientes("clientes",[
@@ -41,7 +45,7 @@ export default function Clientes() {
             setEdit(null)
         } else {
             const nuevoCliente = {
-                id: clientes.length +1,
+                id: Date.now(),
                 nombre: form.nombre,
                 email: form.email
             };
@@ -65,7 +69,23 @@ export default function Clientes() {
     const verDetalles = (cliente: Clientes) =>{
         setSelectClient(cliente)
     }
-    
+
+    const [filtro, setFiltro] = useState("")
+    const [filtroDebounceado, setFiltroDebounceado] = useState("");
+
+
+    useEffect(() => {
+    const timeout = setTimeout(() => {
+    setFiltroDebounceado(filtro);
+    }, 500); 
+
+  return () => clearTimeout(timeout); // limpia el timeout anterior
+}, [filtro]);
+
+const clientesFiltrados = clientes.filter((c) => 
+    normalizar(c.nombre).includes(normalizar(filtroDebounceado)) ||
+    normalizar(c.email).includes(normalizar(filtroDebounceado))
+    )
     
     return (
         <div className="min-h-screen bg-gray-700 py-10 px-4 flex flex-col items-center">
@@ -80,16 +100,23 @@ export default function Clientes() {
                 onCancel={() => {
                     setEdit(null)
                     setForm({nombre: '', email: ''})
-                }
-                }
+                }}
                 edit={edit}
                 />
 
+                <input
+                    type="text"
+                    placeholder="Buscar cliente..."
+                    value={filtro}
+                    onChange={(e) => setFiltro(e.target.value)}
+                    className="w-full px-4 py-2 mb-6 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-400"
+                />
+
                 <ListaClientes
-                cliente={clientes}
-                onDelete={handleDelete}
-                onEdit={handleEdit}
-                onView={verDetalles}
+                    cliente={clientesFiltrados}
+                    onDelete={handleDelete}
+                    onEdit={handleEdit}
+                    onView={verDetalles}
                 />
 
                 {selectClient && (
