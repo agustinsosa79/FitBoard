@@ -1,23 +1,27 @@
 import React, { useState } from "react";
 import { ClientForm } from "../components/ClientForm";
-import { Clientes, Form } from "../Types/cliente";
+import { Clientes, Form} from "../Types/cliente";
 import { ListaClientes } from "../components/ListaClientes";
+import { ClienteModal } from "../components/ClienteModal";
+import { useLocalStorageClientes } from "../hooks/useLocalStorageClientes";
 
 
 
 export default function Clientes() {
-    const [clientes, setClientes] = useState<Clientes[]>([
+    const [clientes, setClientes] = useLocalStorageClientes("clientes",[
         { id: 1, nombre: "Juan Pérez", email: "juan.perez@email.com" },
         { id: 2, nombre: "María López", email: "maria.lopez@email.com" },
         { id: 3, nombre: "Carlos Sánchez", email: "carlos.sanchez@email.com" }
     ]);
-    
+
     const [ form, setForm] = useState<Form>({
         nombre: '',
         email: ''
     });
 
     const [edit, setEdit] = useState<Clientes | null>(null)
+
+    const [selectClient, setSelectClient] = useState<Clientes | null>(null)
 
     
     
@@ -57,6 +61,10 @@ export default function Clientes() {
                 email: cliente.email
             });
     }
+
+    const verDetalles = (cliente: Clientes) =>{
+        setSelectClient(cliente)
+    }
     
     
     return (
@@ -81,7 +89,15 @@ export default function Clientes() {
                 cliente={clientes}
                 onDelete={handleDelete}
                 onEdit={handleEdit}
+                onView={verDetalles}
                 />
+
+                {selectClient && (
+                    <ClienteModal
+                    cliente={selectClient}
+                    onCancel={() => setSelectClient(null)}
+                    />
+                )}
             </div>
         </div>
     );

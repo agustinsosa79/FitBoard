@@ -5,9 +5,10 @@ interface Props {
     cliente: Clientes;
     onDelete: (id: number) => void;  
     onEdit: (cliente: Clientes) => void;
+    onView: (cliente: Clientes) => void;
 }
 
-export const ClienteItem: React.FC<Props> = ({cliente, onDelete, onEdit}) => {
+export const ClienteItem: React.FC<Props> = ({cliente, onDelete, onEdit, onView}) => {
     return (
         <li className="cliente-item flex items-center justify-between p-4 bg-white rounded-lg shadow mb-2">
             <span className="text-lg font-medium text-gray-800">{cliente.nombre}</span>
@@ -24,6 +25,7 @@ export const ClienteItem: React.FC<Props> = ({cliente, onDelete, onEdit}) => {
             >
                 Eliminar
             </button>
+            <button onClick={() => onView(cliente)}>Ver detalles</button>
             </div>
         </li>
     );
