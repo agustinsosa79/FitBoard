@@ -6,4 +6,8 @@ export type ClienteFormProps = {
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
     onSuccess?: () => void;
+    error?: string | null;
+    agregar?: boolean;
+    setAgregar: (agregar: boolean) => void;
+    resetForm?: () => void;
 }

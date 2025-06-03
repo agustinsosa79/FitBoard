@@ -17,17 +17,20 @@ export default function Clientes() {
         { id: 2, nombre: "María López", email: "maria.lopez@email.com" },
         { id: 3, nombre: "Carlos Sánchez", email: "carlos.sanchez@email.com" }
     ]);
-
     const [ form, setForm] = useState<Form>({
         nombre: '',
         email: ''
     });
-
-
     const [selectClient, setSelectClient] = useState<Clientes | null>(null)
+    const [errorPrincipal, setErrorPrincipal] = useState<string | null>(null);
+    const [errorModal, setErrorModal] = useState<string | null>(null);
+    const [agregar, setAgregar] = useState(false);
 
-    
-    
+    const resetForm = () => {
+        setForm({ nombre: '', email: '' });
+        setErrorPrincipal(null);
+    }
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const name = e.target.name
         const value = e.target.value
@@ -39,13 +42,26 @@ export default function Clientes() {
     const addClient = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        const emailExistente = clientes.some(cliente => cliente.email === form.email);
+        if (emailExistente) {
+            setForm(prevForm => ({...prevForm, email: ''}));
+            setErrorPrincipal("El email ya está en uso. Por favor, utiliza otro.");
+            setTimeout(() => {
+                setErrorPrincipal(null);
+            }, 3000);
+            return;
+
+        }
+
         const nuevoCliente = {
             id: Date.now(),
             nombre: form.nombre,
             email: form.email
         };
+        setErrorPrincipal(null);
         setClientes(clientes => [...clientes, nuevoCliente]);
         setForm({nombre: '', email: ''});
+        setAgregar(false);
     }
 
     const handleDelete = (id:number) => {
@@ -87,7 +103,10 @@ const clientesFiltrados = clientes.filter((c) =>
                     form={form}
                     onChange={handleChange}
                     onSubmit={addClient}
-                    onSuccess={() => setForm({ nombre: '', email: '' })}
+                    error={errorPrincipal}
+                    agregar={agregar}
+                    setAgregar={setAgregar}
+                    resetForm={resetForm}
                 />
 
                 <input
@@ -95,7 +114,7 @@ const clientesFiltrados = clientes.filter((c) =>
                     placeholder="Buscar cliente..."
                     value={filtro}
                     onChange={(e) => setFiltro(e.target.value)}
-                    className="w-full px-4 py-2 mb-6 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-400 placeholder:text-gray-400"
+                    className="w-full px-4 py-2 mb-6 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-400 placeholder:text-gray-400 text-white" 
                 />
 
                 <ListaClientes
@@ -107,8 +126,11 @@ const clientesFiltrados = clientes.filter((c) =>
                 {selectClient && (
                     <ClienteModal
                     cliente={selectClient}
+                    clientes={clientes}
                     onCancel={() => setSelectClient(null)}
                     onEdit={handleEdit}
+                    error={errorModal}
+                    setErrorModal={setErrorModal}
                     />
                 )}
             </div>
