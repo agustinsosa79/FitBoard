@@ -5,11 +5,10 @@ import { ClienteItem } from "./ClienteItem";
 interface Props {
     cliente: Clientes[];
     onDelete: (id: number) => void;  
-    onEdit: (cliente: Clientes) => void;
     onView: (cliente: Clientes) => void;
 }
 
-export const ListaClientes: React.FC<Props> = ({cliente, onDelete, onEdit, onView }) => {
+export const ListaClientes: React.FC<Props> = ({cliente, onDelete, onView }) => {
         if (cliente.length === 0) {
             return <p className="text-center text-gray-500 py-4">No hay clientes cargados</p>
         }
@@ -20,7 +19,6 @@ export const ListaClientes: React.FC<Props> = ({cliente, onDelete, onEdit, onVie
             <ClienteItem
             cliente={c}
             onDelete={onDelete}
-            onEdit={onEdit}
             onView={onView}
             />
         ))}

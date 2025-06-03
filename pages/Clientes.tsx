@@ -23,7 +23,6 @@ export default function Clientes() {
         email: ''
     });
 
-    const [edit, setEdit] = useState<Clientes | null>(null)
 
     const [selectClient, setSelectClient] = useState<Clientes | null>(null)
 
@@ -38,32 +37,23 @@ export default function Clientes() {
     
     
     const addClient = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        if (edit) {
-            const clientesActualizados = clientes.map(c => c.id === edit.id ? {...c, nombre: form.nombre, email: form.email}: c)
-            setClientes(clientesActualizados)
-            setEdit(null)
-        } else {
-            const nuevoCliente = {
-                id: Date.now(),
-                nombre: form.nombre,
-                email: form.email
-            };
-            setClientes(clientes => [...clientes, nuevoCliente] )
-        }
-        setForm({nombre: '', email: ''})
+        e.preventDefault();
+
+        const nuevoCliente = {
+            id: Date.now(),
+            nombre: form.nombre,
+            email: form.email
+        };
+        setClientes(clientes => [...clientes, nuevoCliente]);
+        setForm({nombre: '', email: ''});
     }
 
     const handleDelete = (id:number) => {
         setClientes(clientes => clientes.filter(cliente => cliente.id !== id))
     }
 
-    const handleEdit = (cliente: Clientes) => {
-        setEdit(cliente)
-            setForm({
-                nombre: cliente.nombre,
-                email: cliente.email
-            });
+    const handleEdit = (clienteActualizado: Clientes) => {
+        setClientes(clientes => clientes.map(c => c.id === clienteActualizado.id ? clienteActualizado : c));
     }
 
     const verDetalles = (cliente: Clientes) =>{
@@ -94,14 +84,10 @@ const clientesFiltrados = clientes.filter((c) =>
                 <h2 className="text-center text-white ">Clientes agregados: {clientes.length}</h2>
                 <p className="mb-8 text-center text-gray-400">Aquí puedes gestionar los clientes de tu gimnasio.</p>
                 <ClientForm
-                form = {form}
-                onChange={handleChange}
-                onSubmit={addClient}
-                onCancel={() => {
-                    setEdit(null)
-                    setForm({nombre: '', email: ''})
-                }}
-                edit={edit}
+                    form={form}
+                    onChange={handleChange}
+                    onSubmit={addClient}
+                    onSuccess={() => setForm({ nombre: '', email: '' })}
                 />
 
                 <input
@@ -109,13 +95,12 @@ const clientesFiltrados = clientes.filter((c) =>
                     placeholder="Buscar cliente..."
                     value={filtro}
                     onChange={(e) => setFiltro(e.target.value)}
-                    className="w-full px-4 py-2 mb-6 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-400"
+                    className="w-full px-4 py-2 mb-6 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-400 placeholder:text-gray-400"
                 />
 
                 <ListaClientes
                     cliente={clientesFiltrados}
                     onDelete={handleDelete}
-                    onEdit={handleEdit}
                     onView={verDetalles}
                 />
 
@@ -123,6 +108,7 @@ const clientesFiltrados = clientes.filter((c) =>
                     <ClienteModal
                     cliente={selectClient}
                     onCancel={() => setSelectClient(null)}
+                    onEdit={handleEdit}
                     />
                 )}
             </div>
