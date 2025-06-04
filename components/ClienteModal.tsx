@@ -116,6 +116,15 @@ export const ClienteModal: React.FC<Props> = ({ cliente, clientes, onCancel, onE
                         <p className="font-medium text-gray-600">
                             <span className="text-gray-900">Email:</span> {cliente.email}
                         </p>
+                        <p className="font-medium text-gray-600">
+                            <span className="text-gray-900">Teléfono:</span> {cliente.telefono}
+                        </p>
+                        <p className="font-medium text-gray-600">
+                            <span className="text-gray-900">Fecha de Inicio:</span> {cliente.fechaDeInicio}
+                        </p>
+                        <p className="font-medium text-gray-600">
+                            <span className="text-gray-900">Activo:</span> {cliente.activo ? "Sí" : "No"}
+                        </p>
                         <button
                             onClick={() => setModoEdicion(true)}
                             className="mt-6 w-full px-4 py-2 rounded-md bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
