@@ -13,13 +13,17 @@ const normalizar = (texto: string) =>
 
 export default function Clientes() {
     const [clientes, setClientes] = useLocalStorageClientes("clientes",[
-        { id: 1, nombre: "Juan Pérez", email: "juan.perez@email.com" },
-        { id: 2, nombre: "María López", email: "maria.lopez@email.com" },
-        { id: 3, nombre: "Carlos Sánchez", email: "carlos.sanchez@email.com" }
+        { id: 1, nombre: "Juan Pérez", edad: 16, email: "juan.perez@email.com", telefono:"2216859302", fechaDeInicio: "10/04/25", activo: true },
+        { id: 2, nombre: "María López", edad: 20, email: "maria.lopez@email.com", telefono:"2216859302", fechaDeInicio: "10/04/25", activo: true },
+        { id: 3, nombre: "Carlos Sánchez", edad: 34, email: "carlos.sanchez@email.com", telefono:"2216859302", fechaDeInicio: "10/04/25", activo: true }
     ]);
     const [ form, setForm] = useState<Form>({
         nombre: '',
-        email: ''
+        email: '',
+        edad: 0,
+        telefono: '',
+        fechaDeInicio: '',
+        activo: false
     });
     const [selectClient, setSelectClient] = useState<Clientes | null>(null)
     const [errorPrincipal, setErrorPrincipal] = useState<string | null>(null);
@@ -27,7 +31,7 @@ export default function Clientes() {
     const [agregar, setAgregar] = useState(false);
 
     const resetForm = () => {
-        setForm({ nombre: '', email: '' });
+        setForm({ nombre: '', email: '', edad: 0, telefono: '', fechaDeInicio: '', activo: false });
         setErrorPrincipal(null);
     }
 
@@ -56,11 +60,15 @@ export default function Clientes() {
         const nuevoCliente = {
             id: Date.now(),
             nombre: form.nombre,
-            email: form.email
+            email: form.email,
+            edad: Number(form.edad),
+            telefono: form.telefono,
+            fechaDeInicio: form.fechaDeInicio,
+            activo: form.activo
         };
         setErrorPrincipal(null);
         setClientes(clientes => [...clientes, nuevoCliente]);
-        setForm({nombre: '', email: ''});
+        setForm({nombre: '', email: '' , edad: 0, telefono: '', fechaDeInicio: '', activo: false });
         setAgregar(false);
     }
 
