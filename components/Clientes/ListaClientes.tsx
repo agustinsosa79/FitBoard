@@ -1,5 +1,5 @@
 
-import { Clientes } from "../Types/cliente"
+import type { Clientes } from "../../Types/cliente"
 import { ClienteItem } from "./ClienteItem";
 import { useState } from "react";
 
@@ -11,7 +11,6 @@ interface Props {
 
 export const ListaClientes: React.FC<Props> = ({cliente, onDelete, onView }) => {
     const [order, setOrder] = useState<'asc' | 'desc'>('asc');
-
     const ClientesOrdenados = [...cliente].sort((a, b) => {
         const fechaA =  new Date(a.fechaDeInicio);
         const fechaB = new Date(b.fechaDeInicio);

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Clientes } from "../Types/cliente";
+import type { Clientes } from "../Types/cliente";
 
 
 export function useLocalStorageClientes(key: string, valorInicial:Clientes[]) {

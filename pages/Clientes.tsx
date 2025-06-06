@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { ClientForm } from "../components/ClientForm";
-import { Clientes, Form} from "../Types/cliente";
-import { ListaClientes } from "../components/ListaClientes";
-import { ClienteModal } from "../components/ClienteModal";
+import { ClientForm } from "../components/Clientes/ClientForm";
+import type { Clientes, Form} from "../Types/cliente";
+import { ListaClientes } from "../components/Clientes/ListaClientes";
+import { ClienteModal } from "../components/Clientes/ClienteModal";
 import { useLocalStorageClientes } from "../hooks/useLocalStorageClientes";
 
 

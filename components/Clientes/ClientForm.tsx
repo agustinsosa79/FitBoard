@@ -1,5 +1,5 @@
 import React from "react";
-import { ClienteFormProps } from "../Types/ClienteFormProps";
+import { ClienteFormProps } from "../../Types/ClienteFormProps";
 
 export function ClientForm({
   form,
