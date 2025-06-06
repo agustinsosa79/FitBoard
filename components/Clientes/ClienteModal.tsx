@@ -8,10 +8,12 @@ interface Props {
     onEdit: (cliente: Clientes) => void;
     error?: string | null;
     setErrorModal: (error: string | null) => void;
+    onActualizarPago: (cliente: Clientes) => void;
 }
 
-export const ClienteModal: React.FC<Props> = ({ cliente, clientes, onCancel, onEdit, error, setErrorModal }) => {
+export const ClienteModal: React.FC<Props> = ({ cliente, clientes, onCancel, onEdit, error, setErrorModal, onActualizarPago }) => {
     const [modoEdicion, setModoEdicion] = useState(false);
+
     const [form, setForm] = useState({
         nombre: cliente.nombre,
         email: cliente.email,
@@ -55,7 +57,14 @@ export const ClienteModal: React.FC<Props> = ({ cliente, clientes, onCancel, onE
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
             <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 animate-fade-in">
                 <button
-                    onClick={handleCancelar}
+                    onClick={() => {
+                        if (modoEdicion) {
+                            setModoEdicion(false);
+                            setErrorModal(null);
+                        } else {
+                            handleCancelar();
+                        }
+                    }}
                     className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-2xl transition"
                     aria-label="Cerrar"
                 >
@@ -89,8 +98,6 @@ export const ClienteModal: React.FC<Props> = ({ cliente, clientes, onCancel, onE
                                 className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-amber-400 placeholder:text-gray-400 text-gray-800"
                             />
 
-                            <input type="date" name="ultimaFechaPago" value={form.ultimaFechaPago} onChange={handleChange} required className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-amber-400 text-gray-800" />
-
                             <div className="flex gap-4 mt-4">
                                 <button
                                     type="submit"
@@ -113,6 +120,9 @@ export const ClienteModal: React.FC<Props> = ({ cliente, clientes, onCancel, onE
                     </div>
                 ) : (
                     <div className="space-y-4">
+                        <p>
+                            <span>Plan: {cliente.plan}</span>
+                        </p>
                         <p className="font-medium text-gray-600">
                             <span className="text-gray-900">Nombre:</span> {cliente.nombre}
                         </p>
@@ -130,6 +140,15 @@ export const ClienteModal: React.FC<Props> = ({ cliente, clientes, onCancel, onE
                         </p>
                         <p className="font-medium text-gray-600">
                             <span className="text-gray-900">Última Fecha de Pago:</span> {cliente.ultimaFechaPago || "N/A"}
+                            <button
+                                onClick={() => {
+                                    onCancel()
+                                    onActualizarPago(cliente);
+                                }}
+                                className="ml-2 px-3 py-1 rounded bg-amber-500 text-white text-sm font-semibold hover:bg-amber-600 transition-colors"
+                            >
+                                Actualizar Pago
+                            </button>
                         </p>
                         <p className="font-medium text-gray-600">
                             <span className="text-gray-900">Activo:</span> {cliente.activo ? "Sí" : "No"}
@@ -142,6 +161,7 @@ export const ClienteModal: React.FC<Props> = ({ cliente, clientes, onCancel, onE
                         </button>
                     </div>
                 )}
+
             </div>
         </div>
     );

@@ -2,6 +2,7 @@ export type Clientes = {
 id: number
 nombre: string
 edad: number
+plan: string
 email: string
 telefono: string
 fechaDeInicio: string
