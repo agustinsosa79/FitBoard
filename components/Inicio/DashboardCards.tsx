@@ -1,6 +1,8 @@
 import { useLocalStorageClientes } from "../../hooks/useLocalStorageClientes";
 import { ClientesTotales } from "./Cards/ClientesTotales";
-import { ProgresoClientes } from "./Cards/ProgresoClientes";
+import { ClientesNuevos }  from "./Cards/ClientesNuevos";
+import { ClientesInactivos } from "./Cards/ClientesInactivos";
+import { ClientesActivos } from "./Cards/ClientesActivos";
 
 
 export default function DashboardCards() {
@@ -14,9 +16,10 @@ export default function DashboardCards() {
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                 <ClientesTotales clientes={clientes} />
-                <ProgresoClientes clientes={clientes} />
-
-
+                <ClientesNuevos clientes={clientes} />
+                <ClientesActivos clientes={clientes} />
+                <ClientesInactivos clientes={clientes} />
+                
             </div>
         </div>
     );
