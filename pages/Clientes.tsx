@@ -4,18 +4,22 @@ import type { Clientes, Form} from "../Types/cliente";
 import { ListaClientes } from "../components/Clientes/ListaClientes";
 import { ClienteModal } from "../components/Clientes/ClienteModal";
 import { useLocalStorageClientes } from "../hooks/useLocalStorageClientes";
+import { PLANES } from "../data/planes";
+import { parse, differenceInDays } from "date-fns";
 
 
 
 
-const normalizar = (texto: string) =>
-    texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+const normalizar = (texto: string | undefined | null) => {
+  if (!texto) return "";
+  return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+};
 
 export default function Clientes() {
     const [clientes, setClientes] = useLocalStorageClientes("clientes",[
-        { id: 1, nombre: "Juan Pérez", edad: 16, email: "juan.perez@email.com", telefono:"2216859302", fechaDeInicio: "10/04/25", activo: true },
-        { id: 2, nombre: "María López", edad: 20, email: "maria.lopez@email.com", telefono:"2216859302", fechaDeInicio: "10/04/25", activo: true },
-        { id: 3, nombre: "Carlos Sánchez", edad: 34, email: "carlos.sanchez@email.com", telefono:"2216859302", fechaDeInicio: "10/04/25", activo: true }
+        { id: 1, nombre: "Juan Pérez", edad: 16, email: "juan.perez@email.com", telefono:"2216859302", fechaDeInicio: "10/04/25", activo: true, ultimaFechaPago: "10/04/25" },
+        { id: 2, nombre: "María López", edad: 20, email: "maria.lopez@email.com", telefono:"2216859302", fechaDeInicio: "10/04/25", activo: true, ultimaFechaPago: "10/04/25" },
+        { id: 3, nombre: "Carlos Sánchez", edad: 34, email: "carlos.sanchez@email.com", telefono:"2216859302", fechaDeInicio: "10/04/25", activo: true, ultimaFechaPago: "10/04/25" },
     ]);
     const [ form, setForm] = useState<Form>({
         nombre: '',
@@ -23,19 +27,37 @@ export default function Clientes() {
         edad: 0,
         telefono: '',
         fechaDeInicio: '',
-        activo: false
+        activo: false,
+        ultimaFechaPago: '',
+        plan: PLANES[0].nombre
     });
     const [selectClient, setSelectClient] = useState<Clientes | null>(null)
     const [errorPrincipal, setErrorPrincipal] = useState<string | null>(null);
     const [errorModal, setErrorModal] = useState<string | null>(null);
     const [agregar, setAgregar] = useState(false);
 
+    useEffect(() => {
+    if (selectClient?.ultimaFechaPago) {
+        const fechaUltimoPago = parse(selectClient.ultimaFechaPago, 'dd/MM/yy', new Date());
+        const fechaActual = new Date();
+        const diasDesdeUltimoPago = differenceInDays(fechaActual, fechaUltimoPago);
+        if (diasDesdeUltimoPago > 30) {
+            setErrorModal("El cliente no ha pagado su cuota en más de 30 días.");
+        } else {
+            setErrorModal(null);
+        }
+    } else {
+        setErrorModal(null); 
+    }
+}, [selectClient]);
+
+
     const resetForm = () => {
-        setForm({ nombre: '', email: '', edad: 0, telefono: '', fechaDeInicio: '', activo: false });
+        setForm({ nombre: '', email: '', edad: 0, telefono: '', fechaDeInicio: '', activo: false, ultimaFechaPago: '', plan: PLANES[0].nombre });
         setErrorPrincipal(null);
     }
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const name = e.target.name
         const value = e.target.value
         setForm(prevForm => ({...prevForm, [name]: value}) )
@@ -64,11 +86,12 @@ export default function Clientes() {
             edad: Number(form.edad),
             telefono: form.telefono,
             fechaDeInicio: form.fechaDeInicio,
-            activo: form.activo
+            activo: form.activo,
+            ultimaFechaPago: form.fechaDeInicio
         };
         setErrorPrincipal(null);
         setClientes(clientes => [...clientes, nuevoCliente]);
-        setForm({nombre: '', email: '' , edad: 0, telefono: '', fechaDeInicio: '', activo: false });
+        setForm({nombre: '', email: '' , edad: 0, telefono: '', fechaDeInicio: '', activo: false, ultimaFechaPago: '', plan: PLANES[0].nombre});
         setAgregar(false);
     }
 

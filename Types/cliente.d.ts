@@ -6,13 +6,22 @@ email: string
 telefono: string
 fechaDeInicio: string
 activo: boolean
+ultimaFechaPago: string
 }
 
 export type Form = {
 nombre: string
 edad: number | string
 email: string
+plan: string
 telefono: string
 fechaDeInicio: string
 activo: boolean
+ultimaFechaPago: string 
+}
+
+export type Plan = {
+    nombre: string
+    precio: number
+    duracion: string
 }

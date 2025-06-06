@@ -14,7 +14,8 @@ export const ClienteModal: React.FC<Props> = ({ cliente, clientes, onCancel, onE
     const [modoEdicion, setModoEdicion] = useState(false);
     const [form, setForm] = useState({
         nombre: cliente.nombre,
-        email: cliente.email
+        email: cliente.email,
+        ultimaFechaPago: cliente.ultimaFechaPago || '',
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -88,6 +89,8 @@ export const ClienteModal: React.FC<Props> = ({ cliente, clientes, onCancel, onE
                                 className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-amber-400 placeholder:text-gray-400 text-gray-800"
                             />
 
+                            <input type="date" name="ultimaFechaPago" value={form.ultimaFechaPago} onChange={handleChange} required className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-amber-400 text-gray-800" />
+
                             <div className="flex gap-4 mt-4">
                                 <button
                                     type="submit"
@@ -114,6 +117,9 @@ export const ClienteModal: React.FC<Props> = ({ cliente, clientes, onCancel, onE
                             <span className="text-gray-900">Nombre:</span> {cliente.nombre}
                         </p>
                         <p className="font-medium text-gray-600">
+                            <span className="text-gray-900">Edad:</span> {cliente.edad}
+                        </p>
+                        <p className="font-medium text-gray-600">
                             <span className="text-gray-900">Email:</span> {cliente.email}
                         </p>
                         <p className="font-medium text-gray-600">
@@ -121,6 +127,9 @@ export const ClienteModal: React.FC<Props> = ({ cliente, clientes, onCancel, onE
                         </p>
                         <p className="font-medium text-gray-600">
                             <span className="text-gray-900">Fecha de Inicio:</span> {cliente.fechaDeInicio}
+                        </p>
+                        <p className="font-medium text-gray-600">
+                            <span className="text-gray-900">Última Fecha de Pago:</span> {cliente.ultimaFechaPago || "N/A"}
                         </p>
                         <p className="font-medium text-gray-600">
                             <span className="text-gray-900">Activo:</span> {cliente.activo ? "Sí" : "No"}
