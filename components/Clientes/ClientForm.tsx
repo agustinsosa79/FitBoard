@@ -48,70 +48,89 @@
           <div className="space-y-4">
             {error && <div className="text-red-500 text-sm mb-2">{error}</div>}
 
-            <input
-              type="text"
-              name="nombre"
-              value={form.nombre}
-              onChange={onChange}
-              placeholder="Nombre del Cliente"
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-amber-400 placeholder:text-gray-400 text-white"
-            />
+            <label className="block text-white">
+              Nombre del Cliente
+              <input
+                type="text"
+                name="nombre"
+                value={form.nombre}
+                onChange={onChange}
+                placeholder="Nombre del Cliente"
+                required
+                className="w-full mt-1 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-amber-400 placeholder:text-gray-400 text-white"
+              />
+            </label>
 
-            <input
-              type="email"
-              name="email"
-              value={form.email}
-              onChange={onChange}
-              placeholder="Email del Cliente"
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-amber-400 placeholder:text-gray-400 text-white"
-            />
+            <label className="block text-white">
+              Email del Cliente
+              <input
+                type="email"
+                name="email"
+                value={form.email}
+                onChange={onChange}
+                placeholder="Email del Cliente"
+                required
+                className="w-full mt-1 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-amber-400 placeholder:text-gray-400 text-white"
+              />
+            </label>
 
-            <input
-              type="text"
-              name="telefono"
-              value={form.telefono}
-              onChange={onChange}
-              placeholder="Teléfono"
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-amber-400 placeholder:text-gray-400 text-white"
-            />
+            <label className="block text-white">
+              Teléfono
+              <input
+                type="text"
+                name="telefono"
+                value={form.telefono}
+                onChange={onChange}
+                placeholder="Teléfono"
+                required
+                className="w-full mt-1 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-amber-400 placeholder:text-gray-400 text-white"
+              />
+            </label>
 
-            <input
-              type="number"
-              name="edad"
-              value={form.edad}
-              onChange={onChange}
-              placeholder="Edad"
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-amber-400 placeholder:text-gray-400 text-white"
-            />
+            <label className="block text-white">
+              Edad
+              <input
+                type="number"
+                name="edad"
+                value={form.edad}
+                onChange={onChange}
+                placeholder="Edad"
+                required
+                className="w-full mt-1 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-amber-400 placeholder:text-gray-400 text-white"
+              />
+            </label>
 
-            <input
-              type="date"
-              name="fechaDeInicio"
-              value={form.fechaDeInicio}
-              onChange={onChange}
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-amber-400 text-white bg-gray-800"
-            />
-            <select
-              name="plan"
-              value={form.plan}
-              onChange={onChange}
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-amber-400 text-white bg-gray-800"
-            >
-              <option value="">Selecciona un plan</option>
-              {PLANES.map((plan) => (
-                <option key={plan.nombre} value={plan.nombre}>
-                  {plan.nombre}
-                  {" - "}
-                  {plan.precio.toLocaleString("es-AR", { style: "currency", currency: "ARS" })}
-                </option>
-              ))}
-            </select>
+            <label className="block text-white">
+              Fecha de Inicio
+              <input
+                type="date"
+                name="fechaDeInicio"
+                value={form.fechaDeInicio}
+                onChange={onChange}
+                required
+                className="w-full mt-1 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-amber-400 text-white bg-gray-800"
+              />
+            </label>
+
+            <label className="block text-white">
+              Plan
+              <select
+                name="plan"
+                value={form.plan}
+                onChange={onChange}
+                required
+                className="w-full mt-1 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-amber-400 text-white bg-gray-800"
+              >
+                <option value="">Selecciona un plan</option>
+                {PLANES.map((plan) => (
+                  <option key={plan.nombre} value={plan.nombre}>
+                    {plan.nombre}
+                    {" - "}
+                    {plan.precio.toLocaleString("es-AR", { style: "currency", currency: "ARS" })}
+                  </option>
+                ))}
+              </select>
+            </label>
 
             <label className="flex items-center space-x-2 text-white">
               <input

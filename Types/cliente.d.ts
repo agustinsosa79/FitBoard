@@ -18,7 +18,7 @@ plan: string
 telefono: string
 fechaDeInicio: string
 activo: boolean
-ultimaFechaPago: string 
+ultimaFechaPago: string
 }
 
 export type Plan = {

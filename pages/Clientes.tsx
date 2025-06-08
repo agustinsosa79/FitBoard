@@ -141,7 +141,6 @@ export default function Clientes() {
         <div className="min-h-screen bg-gray-700 py-10 px-4 flex flex-col items-center">
             <div className="max-w-2xl w-full">
                 <h1 className="text-3xl text-amber-50 font-bold mb-2 text-center">Clientes</h1>
-                <h2 className="text-center text-white ">Clientes agregados: {clientes.length}</h2>
                 <p className="mb-8 text-center text-gray-400">Aquí puedes gestionar los clientes de tu gimnasio.</p>
                 <ClientForm
                     form={form}
