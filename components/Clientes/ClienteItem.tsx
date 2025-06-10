@@ -1,33 +1,37 @@
 import type { Clientes } from "../../Types/cliente";
 
-
 interface Props {
     cliente: Clientes;
     onDelete: (id: number) => void;  
     onView: (cliente: Clientes) => void;
 }
 
-export const ClienteItem: React.FC<Props> = ({cliente, onDelete, onView}) => {
+export const ClienteItem: React.FC<Props> = ({ cliente, onDelete, onView }) => {
     return (
-        <li className="cliente-item flex items-center justify-between p-4 bg-white rounded-lg shadow mb-2">
-            <span  className=" ml-0.5 mr-20 p-0 font-semibold text-lg">{cliente.nombre}</span>
-            <span className="ml-1 text-sm text-blue-600 bg-blue-50 px-2 py-1 rounded text-start">{cliente.fechaDeInicio}</span>
+        <li className="cliente-item flex items-center justify-between p-4 bg-white rounded-2xl shadow-md mb-3">
+            <div className="flex flex-col">
+                <span className="text-lg font-semibold text-gray-800">
+                    {cliente.nombre}
+                </span>
+                <span className="text-sm text-blue-600 bg-blue-100 px-2 py-0.5 rounded mt-1 w-fit">
+                    {cliente.fechaDeInicio}
+                </span>
+            </div>
+
             <div className="flex gap-2">
-            <button
-                className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition"
-                onClick={() => onDelete(cliente.id)}
-            >
-                Eliminar
-            </button>
-            <button
-                className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
-                onClick={() => onView(cliente)}
-            >
-                Ver detalles
-            </button>
+                <button
+                    onClick={() => onDelete(cliente.id)}
+                    className="px-4 py-1.5 bg-red-500 text-white rounded-xl hover:bg-red-600 transition-colors text-sm font-medium"
+                >
+                    Eliminar
+                </button>
+                <button
+                    onClick={() => onView(cliente)}
+                    className="px-4 py-1.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors text-sm font-medium"
+                >
+                    Ver detalles
+                </button>
             </div>
         </li>
     );
-
-
 }

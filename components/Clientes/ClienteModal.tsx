@@ -11,18 +11,26 @@ interface Props {
     onActualizarPago: (cliente: Clientes) => void;
 }
 
-export const ClienteModal: React.FC<Props> = ({ cliente, clientes, onCancel, onEdit, error, setErrorModal, onActualizarPago }) => {
+export const ClienteModal: React.FC<Props> = ({
+    cliente,
+    clientes,
+    onCancel,
+    onEdit,
+    error,
+    setErrorModal,
+    onActualizarPago,
+}) => {
     const [modoEdicion, setModoEdicion] = useState(false);
 
     const [form, setForm] = useState({
         nombre: cliente.nombre,
         email: cliente.email,
-        ultimaFechaPago: cliente.ultimaFechaPago || '',
+        ultimaFechaPago: cliente.ultimaFechaPago || "",
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setForm(prevForm => ({ ...prevForm, [name]: value }));
+        setForm((prevForm) => ({ ...prevForm, [name]: value }));
     };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -33,7 +41,7 @@ export const ClienteModal: React.FC<Props> = ({ cliente, clientes, onCancel, onE
         );
 
         if (emailYaExiste) {
-            setForm(prevForm => ({ ...prevForm, email: '' }));
+            setForm((prevForm) => ({ ...prevForm, email: "" }));
             setErrorModal("Ese email ya está en uso por otro cliente.");
             setTimeout(() => {
                 setErrorModal(null);
@@ -55,7 +63,7 @@ export const ClienteModal: React.FC<Props> = ({ cliente, clientes, onCancel, onE
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-            <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 animate-fade-in">
+            <div className="relative bg-gray-900 border border-indigo-700/40 text-white rounded-2xl shadow-2xl w-full max-w-md p-8 animate-fade-in">
                 <button
                     onClick={() => {
                         if (modoEdicion) {
@@ -65,13 +73,13 @@ export const ClienteModal: React.FC<Props> = ({ cliente, clientes, onCancel, onE
                             handleCancelar();
                         }
                     }}
-                    className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-2xl transition"
+                    className="absolute top-4 right-4 text-indigo-300 hover:text-white text-2xl transition"
                     aria-label="Cerrar"
                 >
                     &times;
                 </button>
 
-                <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
+                <h2 className="text-2xl font-bold mb-6 text-center text-indigo-200">
                     {modoEdicion ? "Editar Cliente" : "Detalles del Cliente"}
                 </h2>
 
@@ -86,7 +94,7 @@ export const ClienteModal: React.FC<Props> = ({ cliente, clientes, onCancel, onE
                                 onChange={handleChange}
                                 placeholder="Nombre"
                                 required
-                                className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-amber-400 placeholder:text-gray-400 text-gray-800"
+                                className="w-full px-4 py-2 bg-gray-800 border border-indigo-700/40 rounded focus:outline-none focus:ring-2 focus:ring-amber-400 placeholder:text-indigo-300 text-white shadow-inner"
                             />
                             <input
                                 type="email"
@@ -95,7 +103,7 @@ export const ClienteModal: React.FC<Props> = ({ cliente, clientes, onCancel, onE
                                 onChange={handleChange}
                                 placeholder="Email"
                                 required
-                                className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-amber-400 placeholder:text-gray-400 text-gray-800"
+                                className="w-full px-4 py-2 bg-gray-800 border border-indigo-700/40 rounded focus:outline-none focus:ring-2 focus:ring-amber-400 placeholder:text-indigo-300 text-white shadow-inner"
                             />
 
                             <div className="flex gap-4 mt-4">
@@ -111,7 +119,7 @@ export const ClienteModal: React.FC<Props> = ({ cliente, clientes, onCancel, onE
                                         setModoEdicion(false);
                                         setErrorModal(null);
                                     }}
-                                    className="flex-1 px-6 py-2 border border-gray-300 rounded hover:bg-gray-100 transition-colors font-semibold"
+                                    className="flex-1 px-6 py-2 border border-indigo-700/40 text-indigo-200 hover:bg-gray-800 transition-colors rounded font-semibold"
                                 >
                                     Cancelar
                                 </button>
@@ -119,30 +127,30 @@ export const ClienteModal: React.FC<Props> = ({ cliente, clientes, onCancel, onE
                         </form>
                     </div>
                 ) : (
-                    <div className="space-y-4">
+                    <div className="space-y-4 text-indigo-200">
                         <p>
                             <span>Plan: {cliente.plan}</span>
                         </p>
-                        <p className="font-medium text-gray-600">
-                            <span className="text-gray-900">Nombre:</span> {cliente.nombre}
+                        <p>
+                            <span className="text-white font-medium">Nombre:</span> {cliente.nombre}
                         </p>
-                        <p className="font-medium text-gray-600">
-                            <span className="text-gray-900">Edad:</span> {cliente.edad}
+                        <p>
+                            <span className="text-white font-medium">Edad:</span> {cliente.edad}
                         </p>
-                        <p className="font-medium text-gray-600">
-                            <span className="text-gray-900">Email:</span> {cliente.email}
+                        <p>
+                            <span className="text-white font-medium">Email:</span> {cliente.email}
                         </p>
-                        <p className="font-medium text-gray-600">
-                            <span className="text-gray-900">Teléfono:</span> {cliente.telefono}
+                        <p>
+                            <span className="text-white font-medium">Teléfono:</span> {cliente.telefono}
                         </p>
-                        <p className="font-medium text-gray-600">
-                            <span className="text-gray-900">Fecha de Inicio:</span> {cliente.fechaDeInicio}
+                        <p>
+                            <span className="text-white font-medium">Fecha de Inicio:</span> {cliente.fechaDeInicio}
                         </p>
-                        <p className="font-medium text-gray-600">
-                            <span className="text-gray-900">Última Fecha de Pago:</span> {cliente.ultimaFechaPago || "N/A"}
+                        <p>
+                            <span className="text-white font-medium">Última Fecha de Pago:</span> {cliente.ultimaFechaPago || "N/A"}
                             <button
                                 onClick={() => {
-                                    onCancel()
+                                    onCancel();
                                     onActualizarPago(cliente);
                                 }}
                                 className="ml-2 px-3 py-1 rounded bg-amber-500 text-white text-sm font-semibold hover:bg-amber-600 transition-colors"
@@ -150,18 +158,17 @@ export const ClienteModal: React.FC<Props> = ({ cliente, clientes, onCancel, onE
                                 Actualizar Pago
                             </button>
                         </p>
-                        <p className="font-medium text-gray-600">
-                            <span className="text-gray-900">Activo:</span> {cliente.activo ? "Sí" : "No"}
+                        <p>
+                            <span className="text-white font-medium">Activo:</span> {cliente.activo ? "Sí" : "No"}
                         </p>
                         <button
                             onClick={() => setModoEdicion(true)}
-                            className="mt-6 w-full px-4 py-2 rounded-md bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
+                            className="mt-6 w-full px-4 py-2 rounded-md bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition"
                         >
                             Editar
                         </button>
                     </div>
                 )}
-
             </div>
         </div>
     );

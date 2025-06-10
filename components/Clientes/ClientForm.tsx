@@ -1,156 +1,187 @@
-  import React from "react";
-  import type { ClienteFormProps } from "../../Types/ClienteFormProps";
-  import { PLANES } from "../../data/planes";
+import React from "react";
+import type { ClienteFormProps } from "../../Types/ClienteFormProps";
+import { PLANES } from "../../data/planes";
 
-  export function ClientForm({
-    form,
-    onChange,
-    onSubmit,
-    error,
-    agregar,
-    setAgregar,
-    resetForm,
-  }: ClienteFormProps) {
+export function ClientForm({
+  form,
+  onChange,
+  onSubmit,
+  error,
+  agregar,
+  setAgregar,
+  resetForm,
+}: ClienteFormProps) {
+  const handleAgregar = () => {
+    if (agregar) {
+      resetForm?.();
+      setAgregar(false);
+      return;
+    }
+    setAgregar(true);
+  };
 
-    const handleAgregar = () => {
-      if (agregar) {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    onSubmit(e);
+  };
 
-        resetForm?.();
-        setAgregar(false);
-        return;
-      }
-      setAgregar(true);
-    };
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onChange(e);
+  };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      onSubmit(e)
-    };
+  return (
+    <>
+      {/* Encabezado y botón Agregar */}
+      <div className="w-full max-w-md bg-gradient-to-b from-gray-900 to-gray-800 rounded-2xl shadow-xl border border-indigo-700/40 p-8 mt-10 h-auto">
+        <div className="flex items-center gap-3 mb-4 border-b border-gray-700 pb-4">
+          <svg className="w-8 h-8 text-indigo-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+          </svg>
+          <h2 className="text-2xl font-bold tracking-wide text-white">Gestión de Clientes</h2>
+          <button
+            onClick={handleAgregar}
+            type="button"
+            className={`ml-auto px-5 py-2 rounded-lg font-semibold shadow transition-all duration-200 ${
+              agregar
+                ? "bg-red-600 hover:bg-red-700 text-white"
+                : "bg-indigo-600 hover:bg-indigo-700 text-white"
+            }`}
+          >
+            {agregar ? "Cancelar" : "Agregar"}
+          </button>
+        </div>
+      </div>
 
-    const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      onChange(e);
-    };
+      {/* Modal para agregar cliente */}
+      {agregar && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 py-6 overflow-y-auto">
+    <div className="bg-gray-900 border border-indigo-700/40 rounded-2xl shadow-2xl p-8 w-full max-w-3xl mx-auto">
+      <h3 className="text-white text-2xl font-bold mb-6">Agregar Cliente</h3>
 
-    return (
-      <form
-        onSubmit={handleSubmit}
-        className="bg-gray-600 rounded-xl shadow-md p-6 space-y-4 mb-10"
-      >
-        <button
-          onClick={handleAgregar}
-          type="button"
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors font-semibold"
-        >
-          {agregar ? "Cancelar" : "Agregar Cliente"}
-        </button>
+      {error && (
+        <div className="bg-red-500/20 border border-red-400 text-red-300 px-4 py-2 rounded-lg text-center font-semibold shadow mb-4">
+          {error}
+        </div>
+      )}
 
-        {(agregar || error) && (
-          <div className="space-y-4">
-            {error && <div className="text-red-500 text-sm mb-2">{error}</div>}
+      <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <label className="flex flex-col text-indigo-200 font-semibold col-span-full md:col-span-1">
+          Nombre del Cliente
+          <input
+            type="text"
+            name="nombre"
+            value={form.nombre}
+            onChange={onChange}
+            placeholder="Nombre del Cliente"
+            required
+            className="mt-2 px-4 py-2 rounded-lg bg-gray-900 border border-indigo-700/40 focus:ring-2 focus:ring-indigo-400 text-white placeholder:text-gray-400 shadow-inner transition"
+          />
+        </label>
 
-            <label className="block text-white">
-              Nombre del Cliente
-              <input
-                type="text"
-                name="nombre"
-                value={form.nombre}
-                onChange={onChange}
-                placeholder="Nombre del Cliente"
-                required
-                className="w-full mt-1 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-amber-400 placeholder:text-gray-400 text-white"
-              />
-            </label>
+        <label className="flex flex-col text-indigo-200 font-semibold col-span-full md:col-span-1">
+          Email del Cliente
+          <input
+            type="email"
+            name="email"
+            value={form.email}
+            onChange={onChange}
+            placeholder="Email del Cliente"
+            required
+            className="mt-2 px-4 py-2 rounded-lg bg-gray-900 border border-indigo-700/40 focus:ring-2 focus:ring-indigo-400 text-white placeholder:text-gray-400 shadow-inner transition"
+          />
+        </label>
 
-            <label className="block text-white">
-              Email del Cliente
-              <input
-                type="email"
-                name="email"
-                value={form.email}
-                onChange={onChange}
-                placeholder="Email del Cliente"
-                required
-                className="w-full mt-1 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-amber-400 placeholder:text-gray-400 text-white"
-              />
-            </label>
+        <label className="flex flex-col text-indigo-200 font-semibold">
+          Teléfono
+          <input
+            type="text"
+            name="telefono"
+            value={form.telefono}
+            onChange={onChange}
+            placeholder="Teléfono"
+            required
+            className="mt-2 px-4 py-2 rounded-lg bg-gray-900 border border-indigo-700/40 focus:ring-2 focus:ring-indigo-400 text-white placeholder:text-gray-400 shadow-inner transition"
+          />
+        </label>
 
-            <label className="block text-white">
-              Teléfono
-              <input
-                type="text"
-                name="telefono"
-                value={form.telefono}
-                onChange={onChange}
-                placeholder="Teléfono"
-                required
-                className="w-full mt-1 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-amber-400 placeholder:text-gray-400 text-white"
-              />
-            </label>
+        <label className="flex flex-col text-indigo-200 font-semibold">
+          Edad
+          <input
+            type="number"
+            name="edad"
+            value={form.edad}
+            onChange={onChange}
+            placeholder="Edad"
+            required
+            className="mt-2 px-4 py-2 rounded-lg bg-gray-900 border border-indigo-700/40 focus:ring-2 focus:ring-indigo-400 text-white placeholder:text-gray-400 shadow-inner transition"
+          />
+        </label>
 
-            <label className="block text-white">
-              Edad
-              <input
-                type="number"
-                name="edad"
-                value={form.edad}
-                onChange={onChange}
-                placeholder="Edad"
-                required
-                className="w-full mt-1 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-amber-400 placeholder:text-gray-400 text-white"
-              />
-            </label>
+        <label className="flex flex-col text-indigo-200 font-semibold">
+          Fecha de Inicio
+          <input
+            type="date"
+            name="fechaDeInicio"
+            value={form.fechaDeInicio}
+            onChange={onChange}
+            required
+            className="mt-2 px-4 py-2 rounded-lg bg-gray-900 border border-indigo-700/40 focus:ring-2 focus:ring-indigo-400 text-white shadow-inner transition"
+          />
+        </label>
 
-            <label className="block text-white">
-              Fecha de Inicio
-              <input
-                type="date"
-                name="fechaDeInicio"
-                value={form.fechaDeInicio}
-                onChange={onChange}
-                required
-                className="w-full mt-1 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-amber-400 text-white bg-gray-800"
-              />
-            </label>
+        <label className="flex flex-col text-indigo-200 font-semibold">
+          Plan
+          <select
+            name="plan"
+            value={form.plan}
+            onChange={onChange}
+            required
+            className="mt-2 px-4 py-2 rounded-lg bg-gray-900 border border-indigo-700/40 focus:ring-2 focus:ring-indigo-400 text-white shadow-inner transition"
+          >
+            <option value="">Selecciona un plan</option>
+            {PLANES.map((plan) => (
+              <option key={plan.nombre} value={plan.nombre}>
+                {plan.nombre} -{" "}
+                {plan.precio.toLocaleString("es-AR", {
+                  style: "currency",
+                  currency: "ARS",
+                })}
+              </option>
+            ))}
+          </select>
+        </label>
 
-            <label className="block text-white">
-              Plan
-              <select
-                name="plan"
-                value={form.plan}
-                onChange={onChange}
-                required
-                className="w-full mt-1 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-amber-400 text-white bg-gray-800"
-              >
-                <option value="">Selecciona un plan</option>
-                {PLANES.map((plan) => (
-                  <option key={plan.nombre} value={plan.nombre}>
-                    {plan.nombre}
-                    {" - "}
-                    {plan.precio.toLocaleString("es-AR", { style: "currency", currency: "ARS" })}
-                  </option>
-                ))}
-              </select>
-            </label>
+        <label className="flex items-center gap-2 text-indigo-200 font-semibold mt-2 md:col-span-2">
+          <input
+            type="checkbox"
+            name="activo"
+            checked={form.activo}
+            onChange={handleCheckboxChange}
+            className="w-5 h-5 accent-indigo-500 rounded focus:ring-indigo-400"
+          />
+          <span>Activo</span>
+        </label>
 
-            <label className="flex items-center space-x-2 text-white">
-              <input
-                type="checkbox"
-                name="activo"
-                checked={form.activo}
-                onChange={handleCheckboxChange}
-                className="w-5 h-5"
-              />
-              <span>Activo</span>
-            </label>
-
-            <button
-              type="submit"
-              className="w-full px-4 py-2 bg-amber-500 text-white rounded hover:bg-amber-600 transition-colors font-semibold"
-            >
-              Agregar Cliente
-            </button>
-          </div>
-        )}
+        <div className="flex gap-4 md:col-span-2 pt-4">
+          <button
+            type="submit"
+            className="flex-1 py-3 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-lg shadow-lg transition-all duration-200"
+          >
+            Agregar
+          </button>
+          <button
+            type="button"
+            onClick={handleAgregar}
+            className="flex-1 py-3 rounded-lg bg-red-600 hover:bg-red-700 text-white font-bold text-lg shadow-lg transition-all duration-200"
+          >
+            Cancelar
+          </button>
+        </div>
       </form>
-    );
-  }
+    </div>
+  </div>
+)}
+
+    </>
+  );
+}

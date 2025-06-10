@@ -3,24 +3,41 @@ import { ClientesTotales } from "./Cards/ClientesTotales";
 import { ClientesNuevos }  from "./Cards/ClientesNuevos";
 import { ClientesInactivos } from "./Cards/ClientesInactivos";
 import { ClientesActivos } from "./Cards/ClientesActivos";
+import {GraficoClientesMensuales} from "./Cards/GraficoClientesMensuales"
 
 
 export default function DashboardCards() {
 
     const [clientes] = useLocalStorageClientes("clientes", []);
     return (
-        <div className="p-0 bg-white rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold mb-4">Bienvenido a FitBoard</h2>
-            <p className="text-gray-700">
-                Aquí puedes gestionar tus clientes, entrenamientos y más.
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                <ClientesTotales clientes={clientes} />
-                <ClientesNuevos clientes={clientes} />
-                <ClientesActivos clientes={clientes} />
-                <ClientesInactivos clientes={clientes} />
-                
-            </div>
-        </div>
+        <div className="p-8 bg-gradient-to-br from-gray-900 via-gray-800 to-indigo-900 shadow-xl border border-indigo-700/40">
+  <h2 className="text-3xl font-extrabold mb-2 text-indigo-300 tracking-tight drop-shadow-lg">
+    Bienvenido a <span className="text-indigo-500">FitBoard</span>
+  </h2>
+  <p className="text-indigo-200 mb-8 text-lg">
+    Gestiona tus clientes, entrenamientos y mucho más desde un solo lugar.
+  </p>
+
+  <div className="grid grid-cols-1  lg:grid-cols-4 gap-6 mb-8">
+    <div className="transition-transform hover:scale-105">
+      <ClientesTotales clientes={clientes} />
+    </div>
+    <div className="transition-transform hover:scale-105">
+      <ClientesNuevos clientes={clientes} />
+    </div>
+    <div className="transition-transform hover:scale-105">
+      <ClientesActivos clientes={clientes} />
+    </div>
+    <div className="transition-transform hover:scale-105">
+      <ClientesInactivos clientes={clientes} />
+    </div>
+  </div>
+
+  <div className="bg-gray-800 rounded-xl shadow-lg p-6 border border-indigo-700/30">
+    <h3 className="text-xl font-semibold mb-4 text-indigo-300">Clientes mensuales</h3>
+    <GraficoClientesMensuales clientes={clientes} />
+  </div>
+</div>
+
     );
 }

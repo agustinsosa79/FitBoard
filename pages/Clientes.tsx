@@ -14,11 +14,7 @@ const normalizar = (texto: string | undefined | null) => {
 };
 
 export default function Clientes() {
-    const [clientes, setClientes] = useLocalStorageClientes("clientes", [
-        { id: 1, nombre: "Juan Pérez", edad: 16, email: "juan.perez@email.com", telefono: "2216859302", fechaDeInicio: "10/04/25", activo: true, ultimaFechaPago: "10/04/25", plan: PLANES[0].nombre },
-        { id: 2, nombre: "María López", edad: 20, email: "maria.lopez@email.com", telefono: "2216859302", fechaDeInicio: "10/04/25", activo: true, ultimaFechaPago: "10/04/25", plan: PLANES[0].nombre },
-        { id: 3, nombre: "Carlos Sánchez", edad: 34, email: "carlos.sanchez@email.com", telefono: "2216859302", fechaDeInicio: "10/04/25", activo: true, ultimaFechaPago: "10/04/25", plan: PLANES[0].nombre },
-    ]);
+    const [clientes, setClientes] = useLocalStorageClientes("clientes", []);
     const [form, setForm] = useState<Form>({
         nombre: '',
         email: '',
@@ -138,56 +134,63 @@ export default function Clientes() {
     );
 
     return (
-        <div className="min-h-screen bg-gray-700 py-10 px-4 flex flex-col items-center">
-            <div className="max-w-2xl w-full">
-                <h1 className="text-3xl text-amber-50 font-bold mb-2 text-center">Clientes</h1>
-                <p className="mb-8 text-center text-gray-400">Aquí puedes gestionar los clientes de tu gimnasio.</p>
-                <ClientForm
-                    form={form}
-                    onChange={handleChange}
-                    onSubmit={addClient}
-                    error={errorPrincipal}
-                    agregar={agregar}
-                    setAgregar={setAgregar}
-                    resetForm={resetForm}
-                />
+        <div className="min-h-screen bg-gray-900 py-10 px-4 flex flex-col items-center">
+  <div className="max-w-2xl w-full">
+    <div className="mb-8 flex flex-col items-start max-w-2xl">
+  <h1 className="text-4xl font-extrabold text-white mb-2 tracking-tight drop-shadow-md">
+    Clientes
+  </h1>
+  <p className="text-lg text-indigo-200 font-semibold pl-4 border-l-4 border-indigo-500 bg-gray-900/80 rounded-r-lg py-2 px-4 shadow-md max-w-full">
+    Aquí podés gestionar los clientes de tu gimnasio.
+  </p>
+</div>
 
-                <input
-                    type="text"
-                    placeholder="Buscar cliente..."
-                    value={filtro}
-                    onChange={(e) => setFiltro(e.target.value)}
-                    className="w-full px-4 py-2 mb-6 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-400 placeholder:text-gray-400 text-white"
-                />
 
-                <ListaClientes
-                    cliente={clientesFiltrados}
-                    onDelete={handleDelete}
-                    onView={verDetalles}
-                />
+    <ClientForm
+      form={form}
+      onChange={handleChange}
+      onSubmit={addClient}
+      error={errorPrincipal}
+      agregar={agregar}
+      setAgregar={setAgregar}
+      resetForm={resetForm}
+    />
 
-                {selectClient && (
-                    <ClienteModal
-                        onActualizarPago={abrirModalPago}
-                        cliente={selectClient}
-                        clientes={clientes}
-                        onCancel={() => setSelectClient(null)}
-                        onEdit={handleEdit}
-                        error={errorModal}
-                        setErrorModal={setErrorModal}
-                    />
-                )}
+    <input
+      type="text"
+      placeholder="Buscar cliente..."
+      value={filtro}
+      onChange={(e) => setFiltro(e.target.value)}
+      className="w-full mt-10 px-4 py-2 mb-6 rounded-md bg-gray-800 border border-gray-900 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500"
+    />
 
-                {mostrarModalPago && selectClient && (
-                    <ModalPago
-                        cliente={selectClient}
-                        onCancel={() => {
-                            setMostrarModalPago(false);
-                        }}
-                        onSave={actualizarFechaPago}
-                    />
-                )}
-            </div>
-        </div>
+    <ListaClientes
+      cliente={clientesFiltrados}
+      onDelete={handleDelete}
+      onView={verDetalles}
+    />
+
+    {selectClient && (
+      <ClienteModal
+        onActualizarPago={abrirModalPago}
+        cliente={selectClient}
+        clientes={clientes}
+        onCancel={() => setSelectClient(null)}
+        onEdit={handleEdit}
+        error={errorModal}
+        setErrorModal={setErrorModal}
+      />
+    )}
+
+    {mostrarModalPago && selectClient && (
+      <ModalPago
+        cliente={selectClient}
+        onCancel={() => setMostrarModalPago(false)}
+        onSave={actualizarFechaPago}
+      />
+    )}
+  </div>
+</div>
+
     );
 }
