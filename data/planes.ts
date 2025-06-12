@@ -1,7 +1,10 @@
-import {type Plan } from "../Types/cliente";
+import { type Plan } from "../Types/cliente";
 
-export const PLANES: Plan[] = [
-    { nombre: "Mensual", precio: 22000, duracion: "1 mes" },
-    { nombre: "Trimestral", precio: 50000, duracion: "3 meses" },
-    { nombre: "Anual", precio: 100000, duracion: "1 año" },
-];
+export type PlanContextType = {
+    planes: Plan[];
+    agregarPlan: (plan: Plan) => void;
+    actualizarPlan: (id: string, plan: Plan) => void; 
+};
+
+export const PLANES: Plan[] = [];
+

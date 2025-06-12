@@ -15,7 +15,7 @@ export default function DashboardCards() {
     Bienvenido a <span className="text-indigo-500">FitBoard</span>
   </h2>
   <p className="text-indigo-200 mb-8 text-lg">
-    Gestiona tus clientes, entrenamientos y mucho más desde un solo lugar.
+    Gestiona tus clientes desde un solo lugar.
   </p>
 
   <div className="grid grid-cols-1  lg:grid-cols-4 gap-6 mb-8">

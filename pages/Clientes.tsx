@@ -23,7 +23,7 @@ export default function Clientes() {
         fechaDeInicio: '',
         activo: false,
         ultimaFechaPago: '',
-        plan: PLANES[0].nombre
+        plan: PLANES.length > 0 ? PLANES[0].nombre : ''
     });
     const [selectClient, setSelectClient] = useState<Clientes | null>(null);
     const [mostrarModalPago, setMostrarModalPago] = useState(false);
@@ -65,7 +65,7 @@ export default function Clientes() {
     }, [selectClient]);
 
     const resetForm = () => {
-        setForm({ nombre: '', email: '', edad: 0, telefono: '', fechaDeInicio: '', activo: false, ultimaFechaPago: '', plan: PLANES[0].nombre });
+        setForm({ nombre: '', email: '', edad: 0, telefono: '', fechaDeInicio: '', activo: false, ultimaFechaPago: '', plan: PLANES.length > 0 ? PLANES[0].nombre : '' });
         setErrorPrincipal(null);
     };
 
@@ -101,7 +101,7 @@ export default function Clientes() {
         };
         setErrorPrincipal(null);
         setClientes(clientes => [...clientes, nuevoCliente]);
-        setForm({ nombre: '', email: '', edad: 0, telefono: '', fechaDeInicio: '', activo: false, ultimaFechaPago: '', plan: PLANES[0].nombre });
+        setForm({ nombre: '', email: '', edad: 0, telefono: '', fechaDeInicio: '', activo: false, ultimaFechaPago: '', plan: PLANES.length > 0 ? PLANES[0].nombre : '' });
         setAgregar(false);
     };
 

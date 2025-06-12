@@ -22,6 +22,7 @@ ultimaFechaPago: string
 }
 
 export type Plan = {
+    id: string
     nombre: string
     precio: number
     duracion: string

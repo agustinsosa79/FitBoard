@@ -10,4 +10,5 @@ export type ClienteFormProps = {
     agregar?: boolean;
     setAgregar: (agregar: boolean) => void;
     resetForm?: () => void;
+    onCancel?: () => void;
 }

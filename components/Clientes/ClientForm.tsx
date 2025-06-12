@@ -1,6 +1,9 @@
 import React from "react";
 import type { ClienteFormProps } from "../../Types/ClienteFormProps";
-import { PLANES } from "../../data/planes";
+import { useContext } from "react";
+import { PlanesContext } from "../../context/PlanesContext";
+
+
 
 export function ClientForm({
   form,
@@ -11,14 +14,23 @@ export function ClientForm({
   setAgregar,
   resetForm,
 }: ClienteFormProps) {
-  const handleAgregar = () => {
-    if (agregar) {
-      resetForm?.();
-      setAgregar(false);
-      return;
-    }
+  // Contexto para acceder a los planes
+  const planesContext = useContext(PlanesContext);
+  console.log("Contexto de Planes:", planesContext);
+  
+  if (!planesContext || !planesContext.planes) {
+    return <div>Cargando planes...</div>;
+  }
+  const { planes } = planesContext;
+  
+  const handleToggleAgregar = () => {
+  if (agregar) {
+    resetForm?.();
+    setAgregar(false);
+  } else {
     setAgregar(true);
-  };
+  }
+};
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -28,6 +40,10 @@ export function ClientForm({
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e);
   };
+
+
+
+  console.log("Formulario de Cliente:", form.plan);
 
   return (
     <>
@@ -39,7 +55,7 @@ export function ClientForm({
           </svg>
           <h2 className="text-2xl font-bold tracking-wide text-white">Gestión de Clientes</h2>
           <button
-            onClick={handleAgregar}
+            onClick={handleToggleAgregar}
             type="button"
             className={`ml-auto px-5 py-2 rounded-lg font-semibold shadow transition-all duration-200 ${
               agregar
@@ -138,16 +154,19 @@ export function ClientForm({
             required
             className="mt-2 px-4 py-2 rounded-lg bg-gray-900 border border-indigo-700/40 focus:ring-2 focus:ring-indigo-400 text-white shadow-inner transition"
           >
-            <option value="">Selecciona un plan</option>
-            {PLANES.map((plan) => (
-              <option key={plan.nombre} value={plan.nombre}>
-                {plan.nombre} -{" "}
-                {plan.precio.toLocaleString("es-AR", {
-                  style: "currency",
-                  currency: "ARS",
-                })}
-              </option>
-            ))}
+            {planes.length === 0 ? (
+              <option value="">No hay planes disponibles</option>
+            ) : (
+              planes.map((plan: { id: string; nombre: string; precio: number }) => (
+                <option key={plan.id} value={plan.nombre}>
+                  {plan.nombre} -{" "}
+                  {plan.precio.toLocaleString("es-AR", {
+                    style: "currency",
+                    currency: "ARS",
+                  })}
+                </option>
+              ))
+            )}
           </select>
         </label>
 
@@ -171,7 +190,7 @@ export function ClientForm({
           </button>
           <button
             type="button"
-            onClick={handleAgregar}
+            onClick={handleToggleAgregar}
             className="flex-1 py-3 rounded-lg bg-red-600 hover:bg-red-700 text-white font-bold text-lg shadow-lg transition-all duration-200"
           >
             Cancelar
