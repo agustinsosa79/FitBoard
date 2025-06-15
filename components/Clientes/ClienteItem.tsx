@@ -7,10 +7,15 @@ interface Props {
 }
 
 export const ClienteItem: React.FC<Props> = ({ cliente, onDelete, onView }) => {
+const esInactivo = !cliente.activo;
+
     return (
-        <li className="cliente-item flex items-center justify-between p-4 bg-white rounded-2xl shadow-md mb-3">
+        <li
+    className={`cliente-item flex items-center justify-between p-4 rounded-2xl shadow-md mb-3 
+        ${esInactivo ? "bg-red-100 border border-red-400" : "bg-white"}`}
+>
             <div className="flex flex-col">
-                <span className="text-lg font-semibold text-gray-800">
+                <span className={`text-lg font-semibold ${esInactivo ? "text-red-700" : "text-gray-800"}`}>
                     {cliente.nombre}
                 </span>
                 <span className="text-sm text-blue-600 bg-blue-100 px-2 py-0.5 rounded mt-1 w-fit">

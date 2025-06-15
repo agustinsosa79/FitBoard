@@ -5,7 +5,7 @@ import { ListaClientes } from "../components/Clientes/ListaClientes";
 import { ClienteModal } from "../components/Clientes/ClienteModal";
 import { useLocalStorageClientes } from "../hooks/useLocalStorageClientes";
 import { PLANES } from "../data/planes";
-import { parse, differenceInDays } from "date-fns";
+import { parse, differenceInDays, format } from "date-fns";
 import { ModalPago } from "../components/Clientes/ModalPago";
 
 const normalizar = (texto: string | undefined | null) => {
@@ -21,7 +21,7 @@ export default function Clientes() {
         edad: 0,
         telefono: '',
         fechaDeInicio: '',
-        activo: false,
+        activo: true,
         ultimaFechaPago: '',
         plan: PLANES.length > 0 ? PLANES[0].nombre : ''
     });
@@ -36,12 +36,13 @@ export default function Clientes() {
         setMostrarModalPago(true);
     };
 
-    const actualizarFechaPago = (nuevaFecha: string) => {
+    const actualizarFechaPago = (data: { nuevaFecha: string; activo: boolean }) => {
         if (!selectClient) return;
 
         const clienteActualizado = {
             ...selectClient,
-            ultimaFechaPago: nuevaFecha,
+            ultimaFechaPago: data.nuevaFecha,
+            activo: data.activo,
         };
 
         handleEdit(clienteActualizado); 
@@ -50,22 +51,32 @@ export default function Clientes() {
     };
 
     useEffect(() => {
-        if (selectClient?.ultimaFechaPago) {
-            const fechaUltimoPago = parse(selectClient.ultimaFechaPago, 'dd/MM/yy', new Date());
-            const fechaActual = new Date();
-            const diasDesdeUltimoPago = differenceInDays(fechaActual, fechaUltimoPago);
-            if (diasDesdeUltimoPago > 30) {
-                setErrorModal("El cliente no ha pagado su cuota en más de 30 días.");
-            } else {
-                setErrorModal(null);
-            }
-        } else {
-            setErrorModal(null);
-        }
-    }, [selectClient]);
+  const hoy = new Date();
+
+  const clientesActualizados = clientes.map(cliente => {
+    if (!cliente.ultimaFechaPago) return { ...cliente, activo: true };
+
+    const fechaPago = parse(cliente.ultimaFechaPago, 'dd/MM/yy', new Date());
+    const diasSinPago = differenceInDays(hoy, fechaPago);
+
+    const estaActivo = diasSinPago <= 30; 
+
+    if (cliente.activo !== estaActivo) {
+      return { ...cliente, activo: estaActivo };
+    }
+
+    return cliente;
+  });
+
+  // Solo actualizar el estado si hay cambios
+  const clientesDistintos = clientesActualizados.some((c, i) => c.activo !== clientes[i].activo);
+  if (clientesDistintos) {
+    setClientes(clientesActualizados);
+  }
+}, [clientes, setClientes]);
 
     const resetForm = () => {
-        setForm({ nombre: '', email: '', edad: 0, telefono: '', fechaDeInicio: '', activo: false, ultimaFechaPago: '', plan: PLANES.length > 0 ? PLANES[0].nombre : '' });
+        setForm({ nombre: '', email: '', edad: 0, telefono: '', fechaDeInicio: '', activo: true, ultimaFechaPago: '', plan: PLANES.length > 0 ? PLANES[0].nombre : '' });
         setErrorPrincipal(null);
     };
 
@@ -95,13 +106,17 @@ export default function Clientes() {
             edad: Number(form.edad),
             telefono: form.telefono,
             fechaDeInicio: form.fechaDeInicio,
-            activo: form.activo,
-            ultimaFechaPago: form.fechaDeInicio,
+            activo: true,
+            ultimaFechaPago:  form.fechaDeInicio
+                ? format(new Date(form.fechaDeInicio), 'dd/MM/yy')
+                : format(new Date(), 'dd/MM/yy'),
             plan: form.plan
         };
+        console.log('Nuevo cliente agregado:', nuevoCliente);
+        
         setErrorPrincipal(null);
         setClientes(clientes => [...clientes, nuevoCliente]);
-        setForm({ nombre: '', email: '', edad: 0, telefono: '', fechaDeInicio: '', activo: false, ultimaFechaPago: '', plan: PLANES.length > 0 ? PLANES[0].nombre : '' });
+        setForm({ nombre: '', email: '', edad: 0, telefono: '', fechaDeInicio: '', activo: true, ultimaFechaPago: '', plan: PLANES.length > 0 ? PLANES[0].nombre : '' });
         setAgregar(false);
     };
 

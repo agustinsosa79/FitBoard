@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PlanesContext } from "./PlanesContext";
+import { PlanesContext } from "../context/PlanesContext";
 import type { PlanContextType } from "../data/planes";
 import { type Plan } from "../Types/cliente";
 import type { ReactNode } from "react";

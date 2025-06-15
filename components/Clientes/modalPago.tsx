@@ -4,7 +4,7 @@ import type { Clientes } from "../../Types/cliente";
 interface Props {
     cliente: Clientes;
     onCancel: () => void;
-    onSave: (nuevaFecha: string) => void;
+    onSave: (data: { nuevaFecha: string; activo: boolean }) => void;
 }
 
 export const ModalPago: React.FC<Props> = ({ cliente, onCancel, onSave }) => {
@@ -12,7 +12,7 @@ export const ModalPago: React.FC<Props> = ({ cliente, onCancel, onSave }) => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        onSave(fecha); 
+        onSave({ nuevaFecha: fecha, activo: true }); // Ahora también actualiza activo a true
     };
 
     return (

@@ -37,10 +37,6 @@ export function ClientForm({
     onSubmit(e);
   };
 
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(e);
-  };
-
 
 
   console.log("Formulario de Cliente:", form.plan);
@@ -168,17 +164,6 @@ export function ClientForm({
               ))
             )}
           </select>
-        </label>
-
-        <label className="flex items-center gap-2 text-indigo-200 font-semibold mt-2 md:col-span-2">
-          <input
-            type="checkbox"
-            name="activo"
-            checked={form.activo}
-            onChange={handleCheckboxChange}
-            className="w-5 h-5 accent-indigo-500 rounded focus:ring-indigo-400"
-          />
-          <span>Activo</span>
         </label>
 
         <div className="flex gap-4 md:col-span-2 pt-4">

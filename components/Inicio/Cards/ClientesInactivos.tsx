@@ -5,15 +5,10 @@ interface Props {
 }
 
 export function ClientesInactivos({ clientes }: Props) {
-    const hoy = new Date();
-    const fechaLimite = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate() - 30);
 
     const inactivos = clientes.filter(cliente => {
-    const ultimaActividad = new Date(cliente.ultimaFechaPago || cliente.fechaDeInicio );
-    console.log(ultimaActividad);
-    
-    return !cliente.activo && ultimaActividad < fechaLimite;
-});
+        return !cliente.activo;
+    });
 
     return (
     <div className="bg-red-100 text-red-900 p-4 rounded-lg shadow-sm">
