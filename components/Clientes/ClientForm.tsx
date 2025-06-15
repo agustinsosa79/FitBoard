@@ -43,7 +43,6 @@ export function ClientForm({
 
   return (
     <>
-      {/* Encabezado y botón Agregar */}
       <div className="w-full max-w-md bg-gradient-to-b from-gray-900 to-gray-800 rounded-2xl shadow-xl border border-indigo-700/40 p-8 mt-10 h-auto">
         <div className="flex items-center gap-3 mb-4 border-b border-gray-700 pb-4">
           <svg className="w-8 h-8 text-indigo-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -64,7 +63,6 @@ export function ClientForm({
         </div>
       </div>
 
-      {/* Modal para agregar cliente */}
       {agregar && (
   <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 py-6 overflow-y-auto">
     <div className="bg-gray-900 border border-indigo-700/40 rounded-2xl shadow-2xl p-8 w-full max-w-3xl mx-auto">
@@ -119,13 +117,34 @@ export function ClientForm({
         <label className="flex flex-col text-indigo-200 font-semibold">
           Edad
           <input
-            type="number"
+            type="text"
             name="edad"
             value={form.edad}
-            onChange={onChange}
+            onChange={e => {
+              let value = e.target.value.replace(/\D/g, ""); // Solo dígitos
+              if (value.length > 1) {
+                value = value.replace(/^0+/, ""); // Quitar ceros iniciales
+              }
+              // Si el usuario borra todo, permitir vacío
+              onChange({
+                target: {
+                  name: "edad",
+                  value: value,
+                }
+              } as React.ChangeEvent<HTMLInputElement>);
+            }}
             placeholder="Edad"
             required
+            inputMode="numeric"
+            pattern="[1-9][0-9]*"
+            min={1}
             className="mt-2 px-4 py-2 rounded-lg bg-gray-900 border border-indigo-700/40 focus:ring-2 focus:ring-indigo-400 text-white placeholder:text-gray-400 shadow-inner transition"
+            autoComplete="off"
+            style={{
+              MozAppearance: "textfield",
+              appearance: "textfield",
+            }}
+            onWheel={e => (e.target as HTMLInputElement).blur()}
           />
         </label>
 
