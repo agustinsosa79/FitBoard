@@ -46,7 +46,7 @@ export default function PlanAjustes() {
                 <div className="bg-gray-800 rounded-xl shadow-md p-6">
                     <h2 className="text-2xl font-bold text-white mb-2">Formulario de ajustes para tus planes</h2>
                     <p className="text-indigo-200 mb-6">
-                        En esta sección podrás ajustar los detalles de tus planes de entrenamiento.
+                        En esta sección podrás ajustar el precio de tus planes
                     </p>
 
                     <form onSubmit={handleSubmit} className="space-y-5">

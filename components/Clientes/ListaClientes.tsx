@@ -12,14 +12,6 @@ export const ListaClientes: React.FC<Props> = ({ cliente, onDelete, onView }) =>
     const [order, setOrder] = useState<'asc' | 'desc'>('asc');
     const [filtro, setFiltro] = useState<'todos' | 'activos' | 'inactivos'>('todos');
 
-    if (!cliente || cliente.length === 0) {
-        return (
-            <p className="text-center text-gray-500 py-4">
-                Cargando clientes...
-            </p>
-        );
-    }
-
     
     const clientesFiltrados = cliente.filter((c) => {
         if (filtro === 'activos') return c.activo;

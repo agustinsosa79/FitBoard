@@ -7,6 +7,8 @@ import { useLocalStorageClientes } from "../hooks/useLocalStorageClientes";
 import { PLANES } from "../data/planes";
 import { parse, differenceInDays, format } from "date-fns";
 import { ModalPago } from "../components/Clientes/ModalPago";
+import { useContext } from "react";
+import { PlanesContext } from "../context/PlanesContext";
 
 const normalizar = (texto: string | undefined | null) => {
     if (!texto) return "";
@@ -30,6 +32,15 @@ export default function Clientes() {
     const [errorPrincipal, setErrorPrincipal] = useState<string | null>(null);
     const [errorModal, setErrorModal] = useState<string | null>(null);
     const [agregar, setAgregar] = useState(false);
+
+    const planesContext = useContext(PlanesContext);
+    const planes = planesContext?.planes || PLANES;
+
+    useEffect(() => {
+    if (!form.plan && planes.length > 0) {
+        setForm(prev => ({ ...prev, plan: planes[0].nombre }));
+    }
+}, [planes]);
 
     const abrirModalPago = (cliente: Clientes) => {
         setSelectClient(cliente);
@@ -68,7 +79,6 @@ export default function Clientes() {
     return cliente;
   });
 
-  // Solo actualizar el estado si hay cambios
   const clientesDistintos = clientesActualizados.some((c, i) => c.activo !== clientes[i].activo);
   if (clientesDistintos) {
     setClientes(clientesActualizados);
@@ -76,15 +86,26 @@ export default function Clientes() {
 }, [clientes, setClientes]);
 
     const resetForm = () => {
-        setForm({ nombre: '', email: '', edad: 0, telefono: '', fechaDeInicio: '', activo: true, ultimaFechaPago: '', plan: PLANES.length > 0 ? PLANES[0].nombre : '' });
-        setErrorPrincipal(null);
-    };
+    setForm({
+        nombre: '',
+        email: '',
+        edad: 0,
+        telefono: '',
+        fechaDeInicio: '',
+        activo: true,
+        ultimaFechaPago: '',
+        plan: PLANES.length > 0 ? PLANES[0].nombre : ''
+    });
+    setErrorPrincipal(null);
+};
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const name = e.target.name;
         const value = e.target.value;
         setForm(prevForm => ({ ...prevForm, [name]: value }));
     };
+
+    console.log('form.plan al agregar:', form.plan)
 
     const addClient = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -110,9 +131,8 @@ export default function Clientes() {
             ultimaFechaPago:  form.fechaDeInicio
                 ? format(new Date(form.fechaDeInicio), 'dd/MM/yy')
                 : format(new Date(), 'dd/MM/yy'),
-            plan: form.plan
+            plan: form.plan.trim() || (PLANES.length > 0 ? PLANES[0].nombre : ''),
         };
-        console.log('Nuevo cliente agregado:', nuevoCliente);
         
         setErrorPrincipal(null);
         setClientes(clientes => [...clientes, nuevoCliente]);
@@ -186,6 +206,8 @@ export default function Clientes() {
     />
 
     {selectClient && (
+      <>
+        {console.log("Cliente seleccionado en modal:", selectClient)}
       <ClienteModal
         onActualizarPago={abrirModalPago}
         cliente={selectClient}
@@ -194,7 +216,8 @@ export default function Clientes() {
         onEdit={handleEdit}
         error={errorModal}
         setErrorModal={setErrorModal}
-      />
+        />
+        </>
     )}
 
     {mostrarModalPago && selectClient && (

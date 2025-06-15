@@ -27,12 +27,14 @@ export const ClienteModal: React.FC<Props> = ({
         email: cliente.email,
         ultimaFechaPago: cliente.ultimaFechaPago || "",
     });
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    
+    
+    
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setForm((prevForm) => ({ ...prevForm, [name]: value }));
     };
-
+    
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -60,6 +62,8 @@ export const ClienteModal: React.FC<Props> = ({
         setErrorModal(null);
         onCancel();
     };
+    console.log("ClienteModal renderizado con cliente:", cliente);
+    
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
@@ -129,13 +133,15 @@ export const ClienteModal: React.FC<Props> = ({
                 ) : (
                     <div className="space-y-4 text-indigo-200">
                         <p>
-                            <span>Plan: {cliente.plan}</span>
+                            <span className="text-amber-400 font-semibold">
+                                {cliente.id ? `ID: ${cliente.id}` : "ID no disponible"}
+                            </span>
+                        </p>
+                        <p>
+                            <span className="text-white font-medium">Plan:</span> {cliente.plan}
                         </p>
                         <p>
                             <span className="text-white font-medium">Nombre:</span> {cliente.nombre}
-                        </p>
-                        <p>
-                            <span className="text-white font-medium">Edad:</span> {cliente.edad}
                         </p>
                         <p>
                             <span className="text-white font-medium">Email:</span> {cliente.email}
