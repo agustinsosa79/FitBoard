@@ -1,19 +1,32 @@
+// src/pages/Login.tsx
+import { useState } from "react";
+import { signIn } from "../src/firebase/auth"; // Asegúrate de que la ruta sea correcta
+import { useNavigate } from "react-router-dom";
 
-export default function Acceso() {
-    return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-            <h1 className="text-3xl font-bold mb-4">Acceso</h1>
-            <form className="bg-white p-6 rounded shadow-md w-80">
-                <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="username">Usuario</label>
-                    <input type="text" id="username" className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" />
-                </div>
-                <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="password">Contraseña</label>
-                    <input type="password" id="password" className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" />
-                </div>
-                <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition duration-200">Iniciar Sesión</button>
-            </form>
-        </div>
-    )
+export function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await signIn(email, password);
+      navigate("/"); // o la ruta principal de tu app
+    } catch {
+      alert("Usuario o contraseña incorrectos");
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <h2>Iniciar sesión en FitBoard</h2>
+      <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
+      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Contraseña" />
+      <button type="submit">Entrar</button>
+    </form>
+  );
 }
+
+
+export default Login;

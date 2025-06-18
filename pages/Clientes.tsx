@@ -40,7 +40,7 @@ export default function Clientes() {
     if (!form.plan && planes.length > 0) {
         setForm(prev => ({ ...prev, plan: planes[0].nombre }));
     }
-}, [planes]);
+}, [planes])
 
     const abrirModalPago = (cliente: Clientes) => {
         setSelectClient(cliente);
