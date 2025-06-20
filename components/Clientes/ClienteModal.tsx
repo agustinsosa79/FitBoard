@@ -25,10 +25,10 @@ export const ClienteModal: React.FC<Props> = ({
     const [form, setForm] = useState({
         nombre: cliente.nombre,
         email: cliente.email,
+        edad: cliente.edad || 0,
+        telefono: cliente.telefono || "",
         ultimaFechaPago: cliente.ultimaFechaPago || "",
     });
-    
-    
     
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -36,33 +36,30 @@ export const ClienteModal: React.FC<Props> = ({
     };
     
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    e.preventDefault();
 
-        const emailYaExiste = clientes.some(
-            (c: Clientes) => c.email === form.email && c.id !== cliente.id
-        );
+    const emailYaExiste = clientes.some(
+        (c: Clientes) => c.email === form.email && c.id !== cliente.id
+    );
 
-        if (emailYaExiste) {
-            setForm((prevForm) => ({ ...prevForm, email: "" }));
-            setErrorModal("Ese email ya está en uso por otro cliente.");
-            setTimeout(() => {
-                setErrorModal(null);
-            }, 3000);
-            return;
-        } else {
-            onCancel();
-        }
+    if (emailYaExiste) {
+        setForm((prevForm) => ({ ...prevForm, email: "" }));
+        setErrorModal("Ese email ya está en uso por otro cliente.");
+        setTimeout(() => {
+            setErrorModal(null);
+        }, 3000);
+        return;
+    }
 
-        setErrorModal(null);
-        onEdit({ ...cliente, ...form });
-        setModoEdicion(false);
-    };
+    setErrorModal(null);
+    onEdit({ ...cliente, ...form, id: cliente.id || "" });
+    setModoEdicion(false);
+};
 
     const handleCancelar = () => {
         setErrorModal(null);
         onCancel();
     };
-    console.log("ClienteModal renderizado con cliente:", cliente);
     
 
     return (
@@ -109,6 +106,14 @@ export const ClienteModal: React.FC<Props> = ({
                                 required
                                 className="w-full px-4 py-2 bg-gray-800 border border-indigo-700/40 rounded focus:outline-none focus:ring-2 focus:ring-amber-400 placeholder:text-indigo-300 text-white shadow-inner"
                             />
+                            <input
+                                type="number"
+                                name="edad"
+                                value={form.edad}
+                                onChange={handleChange}
+                                placeholder="Edad"
+                                className="w-full px-4 py-2 bg-gray-800 border border-indigo-700/40 rounded focus:outline-none focus:ring-2 focus:ring-amber-400 placeholder:text-indigo-300 text-white shadow-inner"
+                            />
 
                             <div className="flex gap-4 mt-4">
                                 <button
@@ -133,15 +138,13 @@ export const ClienteModal: React.FC<Props> = ({
                 ) : (
                     <div className="space-y-4 text-indigo-200">
                         <p>
-                            <span className="text-amber-400 font-semibold">
-                                {cliente.id ? `ID: ${cliente.id}` : "ID no disponible"}
-                            </span>
-                        </p>
-                        <p>
                             <span className="text-white font-medium">Plan:</span> {cliente.plan}
                         </p>
                         <p>
-                            <span className="text-white font-medium">Nombre:</span> {cliente.nombre}
+                            <span className="text-white font-medium">Nombre Completo:</span> {cliente.nombre}
+                        </p>
+                        <p>
+                            <span className="text-white font-medium">Edad:</span> {cliente.edad || "N/A"}
                         </p>
                         <p>
                             <span className="text-white font-medium">Email:</span> {cliente.email}

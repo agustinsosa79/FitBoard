@@ -1,40 +1,48 @@
 import { useState, useEffect } from "react";
-import { PlanesContext } from "../context/PlanesContext";
-import type { PlanContextType } from "../data/planes";
-import { type Plan } from "../Types/cliente";
+import { PlanesContext } from "./PlanesContext";
+import type { Plan, NuevoPlan } from "../Types/cliente";
 import type { ReactNode } from "react";
-import { PLANES } from "../data/planes";
+import { useAuth } from "../src/context/authContext";
+import {
+  agregarPlanDB,
+  eliminarPlanDB,
+  obtenerPlanesPorUsuario,
+} from "../src/services/PlanService";
 
 export const PlanesProvider = ({ children }: { children: ReactNode }) => {
-  const [planes, setPlanes] = useState<Plan[]>(() => {
-    const planesGuardados = localStorage.getItem("planes");
-    return planesGuardados ? JSON.parse(planesGuardados) : [...PLANES];
-  });
-
-  const agregarPlan = (plan: Plan) => {
-    setPlanes((prevPlanes) => [...prevPlanes, plan]);
-  };
-
-  const actualizarPlan = (id: string, updatedPlan: Plan) => {
-    setPlanes((prevPlanes) =>
-      prevPlanes.map((plan) => (plan.id === id ? updatedPlan : plan))
-    );
-  };
+  const [planes, setPlanes] = useState<Plan[]>([]);
+  const auth = useAuth();
+  const userId = auth?.user?.uid;
 
   useEffect(() => {
-    localStorage.setItem("planes", JSON.stringify(planes));
-  }, [planes]);
+    if (!userId) return;
+    obtenerPlanesPorUsuario(userId).then(setPlanes);
+  }, [userId]);
 
-  const eliminarPlan = (id: string) => {
-    setPlanes((prevPlanes) => prevPlanes.filter((plan) => plan.id !== id));
+  const agregarPlan = async (plan: NuevoPlan) => {
+    if (!userId) throw new Error("No hay usuario autenticado");
+    await agregarPlanDB({ ...plan, userId });
+    const planesUsuario = await obtenerPlanesPorUsuario(userId);
+    setPlanes(planesUsuario);
   };
 
-  const value: PlanContextType = {
+  const eliminarPlan = async (id: string) => {
+    if (!userId) throw new Error("No hay usuario autenticado");
+    await eliminarPlanDB(id);
+    const planesUsuario = await obtenerPlanesPorUsuario(userId);
+    setPlanes(planesUsuario);
+  };
+
+  const value = {
     planes,
     agregarPlan,
-    actualizarPlan,
-    eliminarPlan
+    eliminarPlan,
+    userId,
   };
 
-  return <PlanesContext.Provider value={value}>{children}</PlanesContext.Provider>;
+  return (
+    <PlanesContext.Provider value={value}>
+      {children}
+    </PlanesContext.Provider>
+  );
 };

@@ -73,7 +73,7 @@ export function ClientForm({
                   name="nombre"
                   value={form.nombre}
                   onChange={onChange}
-                  placeholder="Nombre del Cliente"
+                  placeholder="Nombre Completo"
                   required
                   className="mt-2 px-4 py-2 rounded-lg bg-gray-900 border border-indigo-700/40 focus:ring-2 focus:ring-indigo-400 text-white placeholder:text-gray-400 shadow-inner transition"
                 />
@@ -86,7 +86,7 @@ export function ClientForm({
                   name="email"
                   value={form.email}
                   onChange={onChange}
-                  placeholder="Email del Cliente"
+                  placeholder="Email"
                   required
                   className="mt-2 px-4 py-2 rounded-lg bg-gray-900 border border-indigo-700/40 focus:ring-2 focus:ring-indigo-400 text-white placeholder:text-gray-400 shadow-inner transition"
                 />

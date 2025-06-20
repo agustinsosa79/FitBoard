@@ -6,6 +6,7 @@ interface Props {
 
 export function ClientesActivos({ clientes }: Props) {
   const activos = clientes.filter(cliente => cliente.activo);
+  console.log("activos", activos);
 
   return (
     <div className="bg-blue-100 text-blue-900 p-4 rounded-lg shadow-sm">

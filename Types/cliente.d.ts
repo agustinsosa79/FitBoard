@@ -1,5 +1,5 @@
 export type Clientes = {
-id: number
+id: string
 nombre: string
 edad: number
 plan: string
@@ -8,6 +8,7 @@ telefono: string
 fechaDeInicio: string
 activo: boolean
 ultimaFechaPago: string
+userId: string 
 }
 
 export type Form = {
@@ -27,3 +28,5 @@ export type Plan = {
     precio: number
     duracion: string
 }
+
+export type NuevoPlan = Omit<Plan, "id"> & { userId: string };

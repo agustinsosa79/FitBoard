@@ -1,14 +1,17 @@
-import { useLocalStorageClientes } from "../../hooks/useLocalStorageClientes";
 import { ClientesTotales } from "./Cards/ClientesTotales";
 import { ClientesNuevos }  from "./Cards/ClientesNuevos";
 import { ClientesInactivos } from "./Cards/ClientesInactivos";
 import { ClientesActivos } from "./Cards/ClientesActivos";
 import {GraficoClientesMensuales} from "./Cards/GraficoClientesMensuales"
+import type { Clientes } from "../../Types/cliente";
+
+interface Props {
+  clientes: Clientes[];
+}
 
 
-export default function DashboardCards() {
+export default function DashboardCards({clientes}: Props) {
 
-    const [clientes] = useLocalStorageClientes("clientes", []);
     return (
         <div className="p-8 bg-gradient-to-br from-gray-900 via-gray-800 to-indigo-900 shadow-xl border border-indigo-700/40">
   <h2 className="text-3xl font-extrabold mb-2 text-indigo-300 tracking-tight drop-shadow-lg">

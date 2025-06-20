@@ -16,9 +16,6 @@ export function ClientesNuevos({ clientes }: Props) {
         return fecha.getMonth() === esteMes && fecha.getFullYear() === esteAnio;
     });
     
-
-    console.log(nuevos);
-    
     return (
         <div className="bg-green-100 text-green-900 p-4 rounded-lg shadow-sm">
             <h3 className="text-lg font-semibold">Clientes nuevos este mes</h3>

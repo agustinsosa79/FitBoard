@@ -1,10 +1,10 @@
-import { type Plan } from "../Types/cliente";
+import { type NuevoPlan, type Plan } from "../Types/cliente";
 
 export type PlanContextType = {
     planes: Plan[];
-    agregarPlan: (plan: Plan) => void;
-    actualizarPlan: (id: string, plan: Plan) => void; 
-    eliminarPlan: (id: string) => void;
+    agregarPlan: (plan: NuevoPlan) => Promise<void>;
+    eliminarPlan: (id: string) => Promise<void>;
+    userId?: string | undefined;
 };
 
 export const PLANES: Plan[] = [];

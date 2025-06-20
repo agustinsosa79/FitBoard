@@ -4,17 +4,19 @@ import { PlanesContext } from '../context/PlanesContext';
 export default function PlanAjustes() {
     const [mostrarModal, setMostrarModal] = useState(false);
     const [eliminarPlanId, setEliminarPlanId] = useState<string | null>(null);
-    const planesContext = useContext(PlanesContext);
+const planesContext = useContext(PlanesContext);
+const [nuevoPlan, setNuevoPlan] = useState<{ nombre: string; precio: number; duracion: string }>({
+    nombre: '',
+    precio: 0,
+    duracion: ''
+});
+const userId = planesContext?.userId; // Asegúrate de que el userId esté disponible en el contexto
 
-    const [nuevoPlan, setNuevoPlan] = useState<{ id: string; nombre: string; precio: number; duracion: string }>({
-        id: crypto.randomUUID(),
-        nombre: '',
-        precio: 0,
-        duracion: ''
-    });
+if (!planesContext || !userId) {
+    return <div className="text-white text-center mt-10">Cargando usuario...</div>;
+}
 
-    if (!planesContext) return <div>Cargando planes...</div>;
-    const { agregarPlan, eliminarPlan, planes } = planesContext;
+const { agregarPlan, eliminarPlan, planes } = planesContext;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -24,13 +26,14 @@ export default function PlanAjustes() {
         }));
     };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        agregarPlan(nuevoPlan);
-        setNuevoPlan({ id: crypto.randomUUID(), nombre: '', precio: 0, duracion: '' });
-        console.log('Nuevo plan agregado:', nuevoPlan);
-    };
-
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  await agregarPlan({
+  ...nuevoPlan,
+    userId,
+});
+setNuevoPlan({ nombre: '', precio: 0, duracion: '' });
+};
     const handleEliminar = (id: string) => {
         setEliminarPlanId(id);
         setMostrarModal(true);

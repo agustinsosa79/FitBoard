@@ -3,7 +3,7 @@ import type { Clientes } from "../../Types/cliente";
 
 interface Props {
     cliente: Clientes;
-    onDelete: (id: number) => void;  
+    onDelete: (id: string) => void;  
     onView: (cliente: Clientes) => void;
 }
 

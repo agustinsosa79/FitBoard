@@ -3,12 +3,17 @@ import { ClientForm } from "../components/Clientes/ClientForm";
 import type { Clientes, Form } from "../Types/cliente";
 import { ListaClientes } from "../components/Clientes/ListaClientes";
 import { ClienteModal } from "../components/Clientes/ClienteModal";
-import { useLocalStorageClientes } from "../hooks/useLocalStorageClientes";
 import { PLANES } from "../data/planes";
 import { parse, differenceInDays, format } from "date-fns";
 import { ModalPago } from "../components/Clientes/ModalPago";
 import { useContext } from "react";
 import { PlanesContext } from "../context/PlanesContext";
+import { guardarCliente } from "../src/services/ClienteService";
+import { useAuth } from "../src/context/authContext";
+import { collection, query, where, onSnapshot } from "firebase/firestore";
+import { db } from "../src/firebase/config";
+import { doc, deleteDoc, updateDoc } from "firebase/firestore";
+
 
 const normalizar = (texto: string | undefined | null) => {
     if (!texto) return "";
@@ -16,7 +21,7 @@ const normalizar = (texto: string | undefined | null) => {
 };
 
 export default function Clientes() {
-    const [clientes, setClientes] = useLocalStorageClientes("clientes", []);
+  const [clientes, setClientes] = useState<Clientes[]>([]);
     const [form, setForm] = useState<Form>({
         nombre: '',
         email: '',
@@ -36,54 +41,79 @@ export default function Clientes() {
     const planesContext = useContext(PlanesContext);
     const planes = planesContext?.planes || PLANES;
 
+    const auth = useAuth(); // obtenés el usuario logueado
+    const user = auth?.user;
+    
+    
+useEffect(() => {
+  if (!user) {
+    return;
+  }
+
+  const q = query(collection(db, "clientes"), where("userId", "==", user.uid));
+
+  const unsubscribe = onSnapshot(q, (snapshot) => {
+    const datos = snapshot.docs.map((doc) => ({
+      id: doc.id, 
+      ...doc.data(),
+    })) as Clientes[];
+    console.log("Datos de clientes obtenidos:", datos);
+    setClientes(datos);
+  });
+
+  return () => unsubscribe();
+}, [user]);
+
     useEffect(() => {
     if (!form.plan && planes.length > 0) {
         setForm(prev => ({ ...prev, plan: planes[0].nombre }));
     }
-}, [planes])
+}, [planes]) //eslint-disable-line react-hooks/exhaustive-deps
 
     const abrirModalPago = (cliente: Clientes) => {
         setSelectClient(cliente);
         setMostrarModalPago(true);
     };
 
-    const actualizarFechaPago = (data: { nuevaFecha: string; activo: boolean }) => {
-        if (!selectClient) return;
+const actualizarFechaPago = async (data: { nuevaFecha: string; }) => {
+    if (!selectClient) return;
 
-        const clienteActualizado = {
-            ...selectClient,
-            ultimaFechaPago: data.nuevaFecha,
-            activo: data.activo,
-        };
+    const hoy = new Date();
+    const fechaPago = new Date(data.nuevaFecha);
+    const diasSinPago = differenceInDays(hoy, fechaPago);
+    const estaActivo = diasSinPago <= 30;
 
-        handleEdit(clienteActualizado); 
-        setSelectClient(clienteActualizado);
-        setMostrarModalPago(false);
+    const clienteActualizado = {
+        ...selectClient,
+        ultimaFechaPago: format(fechaPago, "dd/MM/yy"),
+        activo: estaActivo,
     };
 
-    useEffect(() => {
+    await handleEdit(clienteActualizado); 
+    setSelectClient(clienteActualizado);
+    setMostrarModalPago(false);
+};
+
+  useEffect(() => {
   const hoy = new Date();
 
-  const clientesActualizados = clientes.map(cliente => {
-    if (!cliente.ultimaFechaPago) return { ...cliente, activo: true };
+  clientes.forEach(async (cliente) => {
+    if (!cliente.ultimaFechaPago) return;
 
     const fechaPago = parse(cliente.ultimaFechaPago, 'dd/MM/yy', new Date());
     const diasSinPago = differenceInDays(hoy, fechaPago);
-
-    const estaActivo = diasSinPago <= 30; 
+    const estaActivo = diasSinPago <= 30;
 
     if (cliente.activo !== estaActivo) {
-      return { ...cliente, activo: estaActivo };
+      try {
+        const ref = doc(db, "clientes", cliente.id);
+        await updateDoc(ref, { activo: estaActivo });
+      } catch (error) {
+        console.error("Error actualizando estado activo:", error);
+      }
     }
-
-    return cliente;
   });
-
-  const clientesDistintos = clientesActualizados.some((c, i) => c.activo !== clientes[i].activo);
-  if (clientesDistintos) {
-    setClientes(clientesActualizados);
-  }
-}, [clientes, setClientes]);
+}, [clientes]);
 
     const resetForm = () => {
     setForm({
@@ -100,54 +130,79 @@ export default function Clientes() {
 };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const name = e.target.name;
-        const value = e.target.value;
-        setForm(prevForm => ({ ...prevForm, [name]: value }));
+  const { name, value } = e.target;
+  setForm(prev => ({ ...prev, [name]: value }));
+};
+
+    const addClient = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+
+  const emailYaExiste = clientes.some(
+    (c) => c.email.trim().toLowerCase() === form.email.trim().toLowerCase()
+  );
+  if (emailYaExiste) {
+    setForm(prev => ({ ...prev, email: '' })); 
+    setErrorPrincipal("Ese email ya está en uso por otro cliente.");
+    setTimeout(() => {
+      setErrorPrincipal(null);
+    }, 3000);
+    return;
+  }
+
+  if (!user) {
+    setErrorPrincipal("No estás autenticado.");
+    return;
+  }
+  if (!form) {
+    setErrorPrincipal("El formulario no está inicializado.");
+    return;
+  }
+
+  try {
+    const nuevoCliente = {
+      nombre: form.nombre,
+      email: form.email,
+      edad: Number(form.edad),
+      telefono: form.telefono,
+      fechaDeInicio: form.fechaDeInicio,
+      activo: form.activo,
+      ultimaFechaPago: form.fechaDeInicio
+        ? format(new Date(form.fechaDeInicio), "dd/MM/yy")
+        : format(new Date(), "dd/MM/yy"),
+      plan: form.plan.trim() || PLANES[0].nombre,
+      userId: user.uid, 
     };
 
-    console.log('form.plan al agregar:', form.plan)
+    await guardarCliente(nuevoCliente);
 
-    const addClient = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    // reset form
+    resetForm();
+    setAgregar(false);
+    setErrorPrincipal(null);
+  } catch (err) {
+    console.error(err);
+    setErrorPrincipal("Error al guardar el cliente.");
+  }
+};
 
-        const emailExistente = clientes.some(cliente => cliente.email === form.email);
-        if (emailExistente) {
-            setForm(prevForm => ({ ...prevForm, email: '' }));
-            setErrorPrincipal("El email ya está en uso. Por favor, utiliza otro.");
-            setTimeout(() => {
-                setErrorPrincipal(null);
-            }, 3000);
-            return;
-        }
+    const handleDelete = async (id: string) => {
+  try {
+    await deleteDoc(doc(db, "clientes", id));
+  } catch (error) {
+    console.error("Error al eliminar cliente:", error);
+  }
+};
 
-        const nuevoCliente = {
-            id: Date.now(),
-            nombre: form.nombre,
-            email: form.email,
-            edad: Number(form.edad),
-            telefono: form.telefono,
-            fechaDeInicio: form.fechaDeInicio,
-            activo: true,
-            ultimaFechaPago:  form.fechaDeInicio
-                ? format(new Date(form.fechaDeInicio), 'dd/MM/yy')
-                : format(new Date(), 'dd/MM/yy'),
-            plan: form.plan.trim() || (PLANES.length > 0 ? PLANES[0].nombre : ''),
-        };
-        
-        setErrorPrincipal(null);
-        setClientes(clientes => [...clientes, nuevoCliente]);
-        setForm({ nombre: '', email: '', edad: 0, telefono: '', fechaDeInicio: '', activo: true, ultimaFechaPago: '', plan: PLANES.length > 0 ? PLANES[0].nombre : '' });
-        setAgregar(false);
-    };
-
-    const handleDelete = (id: number) => {
-        setClientes(clientes => clientes.filter(cliente => cliente.id !== id));
-    };
-
-    const handleEdit = (clienteActualizado: Clientes) => {
-        setClientes(clientes => clientes.map(c => c.id === clienteActualizado.id ? clienteActualizado : c));
-    };
-
+    const handleEdit = async (clienteActualizado: Clientes) => {
+  try {
+    const ref = doc(db, "clientes", clienteActualizado.id);
+    const { id, ...resto } = clienteActualizado; // eslint-disable-line @typescript-eslint/no-unused-vars
+    await updateDoc(ref, resto);
+    setSelectClient(clienteActualizado);
+  } catch (error) {
+    console.error("Error al actualizar cliente:", error);
+  }
+};
     const verDetalles = (cliente: Clientes) => {
         setSelectClient(cliente);
     };
@@ -168,6 +223,9 @@ export default function Clientes() {
         normalizar(c.email).includes(normalizar(filtroDebounceado))
     );
 
+    if (!user) {
+      return <div className="text-white text-center mt-10">Cargando usuario...</div>;
+    }
     return (
         <div className="min-h-screen bg-gray-900 py-10 px-4 flex flex-col items-center">
   <div className="max-w-2xl w-full">

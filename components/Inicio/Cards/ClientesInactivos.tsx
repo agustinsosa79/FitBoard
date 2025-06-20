@@ -6,9 +6,10 @@ interface Props {
 
 export function ClientesInactivos({ clientes }: Props) {
 
-    const inactivos = clientes.filter(cliente => {
-        return !cliente.activo;
-    });
+    const inactivos = clientes.filter(cliente => !cliente.activo);
+
+    
+
 
     return (
     <div className="bg-red-100 text-red-900 p-4 rounded-lg shadow-sm">

@@ -6,7 +6,7 @@ export default function BarraLateral() {
     const user = auth?.user;
 
     return (
-        <aside className="w-72 bg-gradient-to-b from-gray-900 to-gray-800 text-white min-h-screen flex flex-col shadow-lg">
+        <aside className="fixed left-0 top-0 w-72 h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white flex flex-col shadow-lg z-50">
             <div className="flex items-center gap-3 px-6 py-6 border-b border-gray-700">
                 <svg className="w-8 h-8 text-indigo-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
@@ -54,10 +54,13 @@ export default function BarraLateral() {
             </nav>
             <div className="px-6 py-4 border-t border-gray-700 mt-auto">
                 <div className="flex items-center gap-3">
-                    <img src="/avatar.png" alt="Usuario" className="w-10 h-10 rounded-full border-2 border-indigo-400" />
                     <div>
-                        <div className="font-semibold">Usuario</div>
-                        <div className="text-xs text-gray-400">Administrador</div>
+                        <div className="font-semibold">
+                            {user?.email || "No logueado"}
+                        </div>
+                        <div className="text-xs text-gray-400">
+                            ID: {user?.uid?.slice(0, 8) || "-"}
+                        </div> 
                     </div>
                 </div>
             </div>
