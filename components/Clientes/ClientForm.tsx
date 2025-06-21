@@ -5,8 +5,8 @@ import { PlanesContext } from "../../context/PlanesContext";
 export function ClientForm({
   form,
   onChange,
-  onSubmit,
   error,
+  onSubmit,
   agregar,
   setAgregar,
   resetForm,
