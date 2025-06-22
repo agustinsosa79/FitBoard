@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
-import { PlanesContext } from "../src/context/PlanesContext";
-import type { Plan, NuevoPlan } from "../Types/cliente";
+import { PlanesContext } from "./PlanesContext";
+import type { Plan, NuevoPlan } from "../../Types/cliente";
 import type { ReactNode } from "react";
-import { useAuth } from "../src/context/authContext";
+import { useAuth } from "./authContext";
 import {
   agregarPlanDB,
   eliminarPlanDB,
   obtenerPlanesPorUsuario,
-} from "../src/services/PlanService";
+} from "../services/PlanService";
 
 export const PlanesProvider = ({ children }: { children: ReactNode }) => {
   const [planes, setPlanes] = useState<Plan[]>([]);
