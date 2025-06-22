@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import App from './App.tsx'
 import './index.css'
-import { PlanesProvider } from '../context/PlanesProvider.tsx'
+import { PlanesProvider } from '../context/PlanesProvider'
 import { AuthProvider } from './context/authContext'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
