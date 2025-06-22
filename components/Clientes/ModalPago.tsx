@@ -12,7 +12,7 @@ export const ModalPago: React.FC<Props> = ({ cliente, onCancel, onSave }) => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        onSave({ nuevaFecha: fecha }); 
+            onSave({ nuevaFecha: fecha }); 
     };
 
     return (
