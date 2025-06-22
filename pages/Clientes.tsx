@@ -7,7 +7,7 @@
   import { parse, differenceInDays, format } from "date-fns";
   import { ModalPago } from "../components/Clientes/ModalPago";
   import { useContext } from "react";
-  import { PlanesContext } from "../context/PlanesContext";
+  import { PlanesContext } from "../src/context/PlanesContext";
   import { guardarCliente } from "../src/services/ClienteService";
   import { useAuth } from "../src/context/authContext";
   import { collection, query, where, onSnapshot } from "firebase/firestore";

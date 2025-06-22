@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { PlanesContext } from '../context/PlanesContext';
+import { PlanesContext } from '../src/context/PlanesContext';
 
 export default function PlanAjustes() {
     const [mostrarModal, setMostrarModal] = useState(false);
