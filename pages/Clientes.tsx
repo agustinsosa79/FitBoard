@@ -217,45 +217,44 @@
         return <div className="text-white text-center mt-10">Cargando usuario...</div>;
       }
       return (
-          <div className="min-h-screen bg-gray-900 py-10 px-4 flex flex-col items-center">
-    <div className="max-w-2xl w-full">
-      <div className="mb-8 flex flex-col items-start max-w-2xl">
-    <h1 className="text-4xl font-extrabold text-white mb-2 tracking-tight drop-shadow-md">
-      Clientes
-    </h1>
-    <p className="text-lg text-indigo-200 font-semibold pl-4 border-l-4 border-indigo-500 bg-gray-900/80 rounded-r-lg py-2 px-4 shadow-md max-w-full">
-      Aquí podés gestionar los clientes de tu gimnasio.
-    </p>
-  </div>
+          <div className="min-h-screen bg-neutral-950 py-10 px-4 flex flex-col items-center">
+  <div className="max-w-2xl w-full">
+    <div className="mb-8 flex flex-col items-start max-w-2xl">
+      <h1 className="text-4xl font-extrabold text-white mb-2 tracking-tight drop-shadow-md">
+        Clientes
+      </h1>
+      <p className="text-lg text-white font-semibold pl-4 border-l-4 border-white bg-black rounded-r-lg py-2 px-4 shadow-md max-w-full">
+        Aquí podés gestionar los clientes de tu gimnasio.
+      </p>
+    </div>
 
+    <ClientForm
+      form={form}
+      onChange={handleChange}
+      onSubmit={addClient}
+      error={errorPrincipal}
+      agregar={agregar}
+      setAgregar={setAgregar}
+      resetForm={resetForm}
+    />
 
-      <ClientForm
-        form={form}
-        onChange={handleChange}
-        onSubmit={addClient}
-        error={errorPrincipal}
-        agregar={agregar}
-        setAgregar={setAgregar}
-        resetForm={resetForm}
-      />
+    <input
+      type="text"
+      placeholder="Buscar cliente..."
+      value={filtro}
+      onChange={(e) => setFiltro(e.target.value)}
+      className="w-full mt-10 px-4 py-2 mb-6 rounded-md bg-black border border-white text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white"
+    />
 
-      <input
-        type="text"
-        placeholder="Buscar cliente..."
-        value={filtro}
-        onChange={(e) => setFiltro(e.target.value)}
-        className="w-full mt-10 px-4 py-2 mb-6 rounded-md bg-gray-800 border border-gray-900 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500"
-      />
+    <ListaClientes
+      cliente={clientesFiltrados}
+      onDelete={handleDelete}
+      onView={verDetalles}
+    />
 
-      <ListaClientes
-        cliente={clientesFiltrados}
-        onDelete={handleDelete}
-        onView={verDetalles}
-      />
-
-      {selectClient && (
-        <>
-          {console.log("Cliente seleccionado en modal:", selectClient)}
+    {selectClient && (
+      <>
+        {console.log("Cliente seleccionado en modal:", selectClient)}
         <ClienteModal
           onActualizarPago={abrirModalPago}
           cliente={selectClient}
@@ -264,19 +263,20 @@
           onEdit={handleEdit}
           error={errorModal}
           setErrorModal={setErrorModal}
-          />
-          </>
-      )}
-
-      {mostrarModalPago && selectClient && (
-        <ModalPago
-          cliente={selectClient}
-          onCancel={() => setMostrarModalPago(false)}
-          onSave={actualizarFechaPago}
         />
-      )}
-    </div>
+      </>
+    )}
+
+    {mostrarModalPago && selectClient && (
+      <ModalPago
+        cliente={selectClient}
+        onCancel={() => setMostrarModalPago(false)}
+        onSave={actualizarFechaPago}
+      />
+    )}
   </div>
+</div>
+
 
       );
   }
