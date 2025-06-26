@@ -40,7 +40,7 @@ export const ListaClientes: React.FC<Props> = ({ cliente, onDelete, onView }) =>
         <>
             <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 <div>
-                    <label htmlFor="order" className="block mb-2 text-sm font-medium text-gray-700">
+                    <label htmlFor="order" className="block mb-2 text-sm font-medium text-gray-400">
                         Ordenar por fecha
                     </label>
                     <select
@@ -48,7 +48,7 @@ export const ListaClientes: React.FC<Props> = ({ cliente, onDelete, onView }) =>
                         id="order"
                         value={order}
                         onChange={(e) => setOrder(e.target.value as 'asc' | 'desc')}
-                        className="w-full max-w-xs px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 text-gray-800 bg-white"
+                        className="w-full max-w-xs px-4 py-2 border border-gray-800 rounded-xl shadow-sm focus:outline-none focus:none text-white bg-gray-950"
                     >
                         <option value="asc">Fecha Más Antigua</option>
                         <option value="desc">Fecha Más Reciente</option>
@@ -56,7 +56,7 @@ export const ListaClientes: React.FC<Props> = ({ cliente, onDelete, onView }) =>
                 </div>
 
                 <div>
-                    <label htmlFor="filtro" className="block mb-2 text-sm font-medium text-gray-700">
+                    <label htmlFor="filtro" className="block mb-2 text-sm font-medium text-gray-400">
                         Filtrar por estado
                     </label>
                     <select
@@ -64,7 +64,7 @@ export const ListaClientes: React.FC<Props> = ({ cliente, onDelete, onView }) =>
                         id="filtro"
                         value={filtro}
                         onChange={(e) => setFiltro(e.target.value as 'todos' | 'activos' | 'inactivos')}
-                        className="w-full max-w-xs px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 text-gray-800 bg-white"
+                        className="w-full max-w-xs px-4 py-2 border border-gray-800 rounded-xl shadow-sm focus:outline-none focus:none text-white bg-gray-950"
                     >
                         <option value="todos">Todos</option>
                         <option value="activos">Activos</option>

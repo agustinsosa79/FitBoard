@@ -34,7 +34,7 @@ export function ClientForm({
 
   return (
     <>
-    <div className="w-full max-w-md bg-black rounded-2xl shadow-2xs border p-8 mt-10 h-auto">
+    <div className="w-full max-w-md bg-gray-950 rounded-2xl shadow-2xs border p-8 mt-10 h-auto">
   <div className="flex items-center gap-3 mb-4 border-b border-white pb-4">
     <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
@@ -45,8 +45,8 @@ export function ClientForm({
       type="button"
       className={`ml-auto px-5 py-2 rounded-lg font-semibold shadow transition-all duration-200 ${
         agregar
-          ? "bg-white text-black hover:bg-gray-200"
-          : "bg-black border border-white text-white hover:bg-white hover:text-black"
+          ? "bg-gray-950 text-black hover:bg-gray-200"
+          : "bg-gray-950 border border-gray-800 text-white hover:bg-gray-900 hover:text-white"
       }`}
     >
       {agregar ? "Cancelar" : "Agregar"}
@@ -56,7 +56,7 @@ export function ClientForm({
 
 {agregar && (
   <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 py-6 overflow-y-auto">
-    <div className="bg-neutral-950 rounded-2xl shadow-2xl p-8 w-full max-w-3xl mx-auto">
+    <div className="bg-gray-900 rounded-2xl shadow-2xl p-8 w-full max-w-3xl mx-auto">
       <h3 className="text-white text-2xl font-bold mb-6">Agregar Cliente</h3>
 
       {error && (
@@ -75,7 +75,7 @@ export function ClientForm({
             onChange={onChange}
             placeholder="Nombre Completo"
             required
-            className="mt-2 px-4 py-2 rounded-lg bg-black border border-white focus:ring-2 focus:ring-white text-white placeholder:text-gray-400 shadow-inner transition"
+            className="mt-2 px-4 py-2 rounded-lg bg-gray-950 border border-gray-800 focus:none placeholder:text-gray-400"
           />
         </label>
 
@@ -88,7 +88,7 @@ export function ClientForm({
             onChange={onChange}
             placeholder="Email"
             required
-            className="mt-2 px-4 py-2 rounded-lg bg-black border border-white focus:ring-2 focus:ring-white text-white placeholder:text-gray-400 shadow-inner transition"
+            className="mt-2 px-4 py-2 rounded-lg bg-gray-950 border border-gray-800 focus:none placeholder:text-gray-400 "
           />
         </label>
 
@@ -101,7 +101,7 @@ export function ClientForm({
             onChange={onChange}
             placeholder="Teléfono"
             required
-            className="mt-2 px-4 py-2 rounded-lg bg-black border border-white focus:ring-2 focus:ring-white text-white placeholder:text-gray-400 shadow-inner transition"
+            className="mt-2 px-4 py-2 rounded-lg bg-gray-950 border border-gray-800 focus:none placeholder:text-gray-400 "
           />
         </label>
 
@@ -130,7 +130,7 @@ export function ClientForm({
             inputMode="numeric"
             pattern="[1-9][0-9]*"
             min={1}
-            className="mt-2 px-4 py-2 rounded-lg bg-black border border-white focus:ring-2 focus:ring-white text-white placeholder:text-gray-400 shadow-inner transition"
+            className="mt-2 px-4 py-2 rounded-lg bg-gray-950 border border-gray-800 focus:none placeholder:text-gray-400 "
             autoComplete="off"
             style={{
               MozAppearance: "textfield",
@@ -148,7 +148,7 @@ export function ClientForm({
             value={form.fechaDeInicio}
             onChange={onChange}
             required
-            className="mt-2 px-4 py-2 rounded-lg bg-black border border-white focus:ring-2 focus:ring-white text-white shadow-inner transition"
+            className="mt-2 px-4 py-2 rounded-lg bg-gray-950 border border-gray-800 focus:none text-white shadow-inner transition"
           />
         </label>
 
@@ -158,7 +158,7 @@ export function ClientForm({
             name="plan"
             value={form.plan || (planes.length > 0 ? planes[0].nombre : "")}
             onChange={onChange}
-            className="mt-2 px-4 py-2 rounded-lg bg-black border border-white focus:ring-2 focus:ring-white text-white shadow-inner transition"
+            className="mt-2 px-4 py-2 rounded-lg bg-gray-950 border border-gray-800 focus:none"
           >
             {planes.length === 0 ? (
               <option value="">No hay planes disponibles</option>
@@ -179,14 +179,14 @@ export function ClientForm({
         <div className="flex gap-4 md:col-span-2 pt-4">
           <button
             type="submit"
-            className="flex-1 py-3 rounded-lg bg-white text-black hover:bg-gray-200 font-bold text-lg shadow-lg transition-all duration-200"
+            className="flex-1 py-3 rounded-lg bg-gray-950 border border-gray-800 focus:none text-white hover:bg-gray-800 font-bold text-lg shadow-lg transition-all duration-200"
           >
             Agregar
           </button>
           <button
             type="button"
             onClick={handleToggleAgregar}
-            className="flex-1 py-3 rounded-lg bg-black text-white hover:bg-white hover:text-black border border-white font-bold text-lg shadow-lg transition-all duration-200"
+            className="flex-1 py-3 rounded-lg bg-black text-white hover:bg-neutral-900 border border-none font-bold text-lg shadow-lg transition-all duration-200"
           >
             Cancelar
           </button>

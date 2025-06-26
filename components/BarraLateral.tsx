@@ -6,19 +6,11 @@ export default function BarraLateral() {
     const user = auth?.user;
 
     return (
-        <aside className="fixed left-0 top-0 w-72 h-screen bg-black text-white flex flex-col shadow-lg z-50 border-r border-gray-700 
+        <aside className="fixed left-0 top-0 w-72 h-screen bg-gray-950 text-white flex flex-col shadow-lg z-50 border-r border-gray-700 
 ">
-            <div className="flex items-center gap-3 px-6 py-6 ">
-                <svg
-                    className="w-8 h-8 text-white group-hover:text-black transition-colors"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-                </svg>
-                <span className="text-2xl font-bold tracking-wide">FitBoard</span>
+            <div className="flex items-center gap-2 px-4 py-4">
+                <img src="../public/dumbbell-svgrepo-com.svg" alt="logo-fitboard" className="w-20 h-20" />
+                <span className="text-2xl font-bold font-monserrat tracking-wide">FitBoard</span>
             </div>
             <nav className="flex-1 px-4 py-6">
                 <ul className="space-y-2">

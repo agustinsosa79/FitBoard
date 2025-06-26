@@ -156,9 +156,7 @@
         telefono: form.telefono,
         fechaDeInicio: form.fechaDeInicio,
         activo: form.activo,
-        ultimaFechaPago: form.fechaDeInicio
-          ? format(new Date(form.fechaDeInicio), "dd/MM/yy")
-          : format(new Date(), "dd/MM/yy"),
+        ultimaFechaPago:  format(new Date(), "dd/MM/yy"),
         plan: form.plan?.trim() || (planes.length > 0 ? planes[0].nombre : ""),
         userId: user.uid, 
       };
@@ -217,13 +215,13 @@
         return <div className="text-white text-center mt-10">Cargando usuario...</div>;
       }
       return (
-          <div className="min-h-screen bg-neutral-950 py-10 px-4 flex flex-col items-center">
+          <div className="min-h-screen bg-gray-900 py-10 px-4 flex flex-col items-center">
   <div className="max-w-2xl w-full">
     <div className="mb-8 flex flex-col items-start max-w-2xl">
       <h1 className="text-4xl font-extrabold text-white mb-2 tracking-tight drop-shadow-md">
         Clientes
       </h1>
-      <p className="text-lg text-white font-semibold pl-4 border-l-4 border-white bg-black rounded-r-lg py-2 px-4 shadow-md max-w-full">
+      <p className="text-lg text-white font-semibold pl-4 border-l-4 border-white bg-gray-950 rounded-r-lg py-2 px-4 shadow-md max-w-full">
         Aquí podés gestionar los clientes de tu gimnasio.
       </p>
     </div>
@@ -243,7 +241,7 @@
       placeholder="Buscar cliente..."
       value={filtro}
       onChange={(e) => setFiltro(e.target.value)}
-      className="w-full mt-10 px-4 py-2 mb-6 rounded-md bg-black border border-white text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white"
+      className="w-full mt-10 px-4 py-2 mb-6 rounded-md bg-gray-950 border border-gray-800 text-white placeholder-gray-500 focus:outline-none focus:none"
     />
 
     <ListaClientes
