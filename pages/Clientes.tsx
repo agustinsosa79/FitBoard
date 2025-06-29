@@ -4,7 +4,7 @@
   import { ListaClientes } from "../components/Clientes/ListaClientes";
   import { ClienteModal } from "../components/Clientes/ClienteModal";
   import { PLANES } from "../data/planes";
-  import { parse, differenceInDays, format } from "date-fns";
+  import { parse, differenceInDays, format, parseISO } from "date-fns";
   import { ModalPago } from "../components/Clientes/ModalPago";
   import { useContext } from "react";
   import { PlanesContext } from "../src/context/PlanesContext";
@@ -81,15 +81,18 @@
   const actualizarFechaPago = async (data: { nuevaFecha: string; }) => {
       if (!selectClient) return;
 
-      const hoy = new Date();
-      const fechaPago = new Date(data.nuevaFecha);
-      const diasSinPago = differenceInDays(hoy, fechaPago);
-      const estaActivo = diasSinPago <= 30;
+      const fechaPago = parseISO(data.nuevaFecha);
+
+        const planDelCliente = planes.find(p => p.nombre === selectClient.plan);
+        const duracionMeses = planDelCliente ? parseInt(planDelCliente.duracion) : 1;
+
+        const nuevaFechaVencimiento = new Date(fechaPago);
+        nuevaFechaVencimiento.setMonth(nuevaFechaVencimiento.getMonth() + duracionMeses);
 
       const clienteActualizado = {
           ...selectClient,
           ultimaFechaPago: format(fechaPago, "dd/MM/yy"),
-          activo: estaActivo,
+            fechaVencimiento: format(nuevaFechaVencimiento, "dd/MM/yy"),
       };
 
       await handleEdit(clienteActualizado); 
@@ -148,8 +151,7 @@
       return;
     }
 
-      // Validación de fecha de inicio
-  const fechaInicio = new Date(form.fechaDeInicio);
+  const fechaInicio = parseISO(form.fechaDeInicio + "T12:00:00");
   if (isNaN(fechaInicio.getTime())) {
     setErrorPrincipal("La fecha de inicio no es válida");
     return;
@@ -160,15 +162,15 @@
 
   const fechaVencimiento = new Date(fechaInicio);
   fechaVencimiento.setMonth(fechaInicio.getMonth() + duracionMeses);
-  
+
     try {
       const nuevoCliente = {
         nombre: form.nombre,
         email: form.email,
         edad: Number(form.edad),
         telefono: form.telefono,
-        fechaDeInicio: form.fechaDeInicio,
-        fechaVencimiento: fechaVencimiento.toISOString(),
+        fechaDeInicio:  format(fechaInicio, "dd/MM/yy"),
+        fechaVencimiento: fechaVencimiento ? format(fechaVencimiento, "dd/MM/yy") : "",
         activo: form.activo,
         ultimaFechaPago:  format(new Date(), "dd/MM/yy"),
         plan: form.plan?.trim() || (planes.length > 0 ? planes[0].nombre : ""),
