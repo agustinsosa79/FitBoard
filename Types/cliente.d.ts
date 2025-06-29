@@ -8,6 +8,7 @@ telefono: string
 fechaDeInicio: string
 activo: boolean
 ultimaFechaPago: string
+fechaVencimiento?: string
 userId: string 
 }
 

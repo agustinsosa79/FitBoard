@@ -91,6 +91,18 @@ setNuevoPlan({ nombre: '', precio: 0, duracion: '' });
                                 />
                             </div>
                         </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-300 mb-1">Duración (meses)</label>
+                            <input
+                                required
+                                type="number"
+                                min={1}
+                                name="duracion"
+                                value={nuevoPlan.duracion}
+                                onChange={handleChange}
+                                className="w-full bg-gray-700 text-white border border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-400"
+                            />
+                        </div>
 
                         <div className="pt-2">
                             <button

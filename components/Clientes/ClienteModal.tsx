@@ -143,6 +143,7 @@ export const ClienteModal: React.FC<Props> = ({
         <p><span className="font-medium">Email:</span> {cliente.email}</p>
         <p><span className="font-medium">Teléfono:</span> {cliente.telefono}</p>
         <p><span className="font-medium">Fecha de Inicio:</span> {cliente.fechaDeInicio}</p>
+        <p><span className="font-medium">Fecha de Vencimiento:</span> {cliente.fechaVencimiento || "N/A"}</p>
         <p>
           <span className="font-medium">Última Fecha de Pago:</span> {cliente.ultimaFechaPago || "N/A"}
           <button

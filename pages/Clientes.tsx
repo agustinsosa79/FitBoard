@@ -123,7 +123,7 @@
       setErrorPrincipal(null);
   };
 
-      const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setForm(prev => ({ ...prev, [name]: value }));
   };
@@ -148,6 +148,19 @@
       return;
     }
 
+      // Validación de fecha de inicio
+  const fechaInicio = new Date(form.fechaDeInicio);
+  if (isNaN(fechaInicio.getTime())) {
+    setErrorPrincipal("La fecha de inicio no es válida");
+    return;
+  }
+
+  const planSeleccionado = planes.find(p => p.nombre === form.plan);
+  const duracionMeses = planSeleccionado ? parseInt(planSeleccionado.duracion) : 1;
+
+  const fechaVencimiento = new Date(fechaInicio);
+  fechaVencimiento.setMonth(fechaInicio.getMonth() + duracionMeses);
+  
     try {
       const nuevoCliente = {
         nombre: form.nombre,
@@ -155,6 +168,7 @@
         edad: Number(form.edad),
         telefono: form.telefono,
         fechaDeInicio: form.fechaDeInicio,
+        fechaVencimiento: fechaVencimiento.toISOString(),
         activo: form.activo,
         ultimaFechaPago:  format(new Date(), "dd/MM/yy"),
         plan: form.plan?.trim() || (planes.length > 0 ? planes[0].nombre : ""),

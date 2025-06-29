@@ -7,6 +7,7 @@ interface Cliente {
   edad: number;
   telefono: string;
   fechaDeInicio: string;
+  fechaVencimiento?: string; 
   activo: boolean;
   ultimaFechaPago: string;
   plan: string;

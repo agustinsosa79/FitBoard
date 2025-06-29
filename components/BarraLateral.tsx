@@ -74,7 +74,7 @@ export default function BarraLateral() {
                                     d="M12 11c0-1.104.896-2 2-2s2 .896 2 2-.896 2-2 2-2-.896-2-2zm0 0V7m0 4v4m0 0h4m-4 0H8"
                                 />
                             </svg>
-                            Ajusta tu precio
+                            Ajusta tu plan
                         </Link>
                     </li>
                     {!user && (
