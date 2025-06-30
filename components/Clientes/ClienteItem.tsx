@@ -21,33 +21,53 @@ export const ClienteItem: React.FC<Props> = ({ cliente, onDelete, onView }) => {
     return (
         <>
             <li
-  className={`cliente-item flex items-center justify-between p-4 rounded-2xl shadow-md mb-3 
-    ${esInactivo ? "bg-red-900 border border-red-900" : "bg-gray-950"}`}
->
-  <div className="flex flex-col">
-    <span className={`text-lg font-semibold ${esInactivo ? "text-white" : "text-white"}`}>
-      {cliente.nombre}
-    </span>
-    <span className="text-sm text-white bg-gray-900 px-2 py-0.5 rounded mt-1 w-fit">
-      {cliente.fechaDeInicio}
-    </span>
-  </div>
+              className={`cliente-item flex items-center justify-between p-5 rounded-3xl shadow-xl mb-5 border-2 transition-all duration-300
+                ${esInactivo ? "bg-gradient-to-r from-red-900 via-red-800 to-red-700 border-red-700" : "bg-gradient-to-r from-gray-950 via-gray-900 to-gray-800 border-gray-800"}
+                hover:scale-[1.025] hover:shadow-2xl`}
+            >
+              <div className="flex flex-col">
+                <span
+                  className={`text-xl font-bold tracking-wide drop-shadow-sm ${
+                    esInactivo ? "text-white" : "text-white"
+                  }`}
+                >
+                  {cliente.nombre}
+                </span>
+                <span className="text-xs font-medium text-gray-200 bg-gray-900/80 px-3 py-1 rounded-lg mt-2 w-fit shadow">
+                  {cliente.fechaDeInicio}
+                </span>
+                {!cliente.activo && (
+                  <span className="mt-2 text-xs font-semibold text-red-200 bg-red-800/80 px-2 py-0.5 rounded shadow">
+                    Inactivo
+                  </span>
+                )}
+              </div>
 
-  <div className="flex gap-2">
-    <button
-      onClick={handleDelete}
-      className="px-4 py-1.5 bg-red-600 text-white rounded-xl hover:bg-red-500  transition-colors text-sm font-medium"
-    >
-      Eliminar
-    </button>
-    <button
-      onClick={() => onView(cliente)}
-      className="px-4 py-1.5 bg-neutral-950 text-white rounded-xl hover:bg-black border border-gray-900 transition-colors text-sm font-medium"
-    >
-      Ver detalles
-    </button>
-  </div>
-</li>
+              <div className="flex gap-3">
+                <button
+                  onClick={handleDelete}
+                  className="px-5 py-2 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-xl shadow hover:from-red-700 hover:to-red-800 hover:shadow-lg transition-all text-sm font-semibold border border-red-800"
+                >
+                  <span className="inline-flex items-center gap-1">
+                    <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    Eliminar
+                  </span>
+                </button>
+                <button
+                  onClick={() => onView(cliente)}
+                  className="px-5 py-2 bg-gradient-to-r from-gray-900 to-black text-white rounded-xl shadow hover:from-black hover:to-gray-900 hover:shadow-lg border border-gray-800 transition-all text-sm font-semibold"
+                >
+                  <span className="inline-flex items-center gap-1">
+                    <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Ver detalles
+                  </span>
+                </button>
+              </div>
+            </li>
 
 {modalOpen && (
   <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 py-6 overflow-y-auto">
@@ -62,7 +82,7 @@ export const ClienteItem: React.FC<Props> = ({ cliente, onDelete, onView }) => {
             }
             setModalOpen(false);
           }}
-          className="bg-red-600 hover:bg-red-800 text-white hover:text-gray-200 font-semibold px-4 py-2 rounded-lg border-none shadow transition"
+          className="bg-red-600 hover:bg-red-700 text-white hover:text-gray-200 font-semibold px-4 py-2 rounded-lg border-none shadow transition"
         >
           Eliminar
         </button>

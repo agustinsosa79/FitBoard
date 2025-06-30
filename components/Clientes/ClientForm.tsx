@@ -35,7 +35,7 @@ export function ClientForm({
   return (
     <>
     <div className="w-full max-w-md bg-gray-950 rounded-2xl shadow-2xs border p-8 mt-10 h-auto">
-  <div className="flex items-center gap-3 mb-4 border-b border-white pb-4">
+  <div className="flex items-center gap-3 mb-4 w-full border-b border-white pb-4 max-w-full">
     <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
     </svg>
@@ -179,17 +179,17 @@ export function ClientForm({
         <div className="flex gap-4 md:col-span-2 pt-4">
           <button
             type="submit"
-            className="flex-1 py-3 rounded-lg bg-gray-950 border border-gray-800 focus:none text-white hover:bg-gray-800 font-bold text-lg shadow-lg transition-all duration-200"
+            className="flex-1 py-3 rounded-lg bg-green-600 border border-gray-800 focus:none text-white hover:bg-green-700 font-bold text-lg shadow-lg transition-all duration-200"
           >
             Agregar
           </button>
-          <button
+            <button
             type="button"
             onClick={handleToggleAgregar}
-            className="flex-1 py-3 rounded-lg bg-black text-white hover:bg-neutral-900 border border-none font-bold text-lg shadow-lg transition-all duration-200"
-          >
+            className="flex-1 py-3 rounded-lg bg-gray-800 text-white hover:bg-gray-700 border border-none font-bold text-lg shadow-lg transition-all duration-200"
+            >
             Cancelar
-          </button>
+            </button>
         </div>
       </form>
     </div>

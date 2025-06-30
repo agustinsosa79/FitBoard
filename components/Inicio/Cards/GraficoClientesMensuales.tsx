@@ -13,7 +13,7 @@ export function GraficoClientesMensuales({ clientes }: Props) {
     const data = Array.from({ length: 12 }, (_, i) => {
         const mes = i;
         const cantidad = clientes.filter(cliente => {
-            const fecha = parse(cliente.fechaDeInicio, "yyyy-MM-dd", new Date());
+            const fecha = parse(cliente.fechaDeInicio, "dd/MM/yy", new Date());
             return fecha.getFullYear() === esteAnio && fecha.getMonth() === mes;
         }).length;
 
@@ -26,13 +26,13 @@ export function GraficoClientesMensuales({ clientes }: Props) {
     });
 
     return (
-        <div className="bg-white p-4 rounded-lg shadow-md mt-6">
-            <h3 className="text-lg font-semibold mb-2">Clientes nuevos por mes ({esteAnio})</h3>
+        <div className="bg-gray-950 p-4 rounded-lg shadow-md mt-6">
+            <h3 className="text-lg font-semibold mb-2 text-white">Clientes nuevos por mes ({esteAnio})</h3>
             <ResponsiveContainer width="100%" height={250}>
                 <BarChart data={data}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="mes" />
-                    <YAxis allowDecimals={false} />
+                    <CartesianGrid strokeDasharray="3" stroke="#222" vertical={false} />
+                    <XAxis dataKey="mes" axisLine={false} tickLine={false} />
+                    <YAxis allowDecimals={false} axisLine={false} tickLine={false} />
                     <Tooltip />
                     <Bar dataKey="nuevos" fill="#4ade80" />
                 </BarChart>

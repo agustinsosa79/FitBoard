@@ -98,7 +98,7 @@
       await handleEdit(clienteActualizado); 
       setSelectClient(clienteActualizado);
       setMostrarModalPago(false);
-  };
+  }; 
 
     useEffect(() => {
     const hoy = new Date();

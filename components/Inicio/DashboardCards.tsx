@@ -13,33 +13,35 @@ interface Props {
 export default function DashboardCards({clientes}: Props) {
 
     return (
-        <div className="p-8 bg-gradient-to-br from-gray-900 via-gray-800 to-indigo-900 shadow-xl border border-indigo-700/40">
-  <h2 className="text-3xl font-extrabold mb-2 text-indigo-300 tracking-tight drop-shadow-lg">
-    Bienvenido a <span className="text-indigo-500">FitBoard</span>
+        <div className="p-8 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 shadow-xl border border-indigo-700/40 h-screen">
+  <h2 className="text-3xl font-extrabold mb-2 text-white tracking-tight drop-shadow-lg pb-5">
+    <span className="text-gray-300">Resumen general de clientes</span>
   </h2>
-  <p className="text-indigo-200 mb-8 text-lg">
-    Gestiona tus clientes desde un solo lugar.
-  </p>
 
-  <div className="grid grid-cols-1  lg:grid-cols-4 gap-6 mb-8">
-    <div className="transition-transform hover:scale-105">
-      <ClientesTotales clientes={clientes} />
+  <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
+    <div className="transition-transform hover:scale-105 h-full w-full flex">
+      <div className="flex-1 flex flex-col justify-stretch h-full w-full">
+        <ClientesTotales clientes={clientes} />
+      </div>
     </div>
-    <div className="transition-transform hover:scale-105">
-      <ClientesNuevos clientes={clientes} />
+    <div className="transition-transform hover:scale-105 h-full w-full flex">
+      <div className="flex-1 flex flex-col justify-stretch h-full w-full">
+        <ClientesNuevos clientes={clientes} />
+      </div>
     </div>
-    <div className="transition-transform hover:scale-105">
-      <ClientesActivos clientes={clientes} />
+    <div className="transition-transform hover:scale-105 h-full w-full flex">
+      <div className="flex-1 flex flex-col justify-stretch h-full w-full">
+        <ClientesActivos clientes={clientes} />
+      </div>
     </div>
-    <div className="transition-transform hover:scale-105">
-      <ClientesInactivos clientes={clientes} />
+    <div className="transition-transform hover:scale-105 h-full w-full flex">
+      <div className="flex-1 flex flex-col justify-stretch h-full w-full">
+        <ClientesInactivos clientes={clientes} />
+      </div>
     </div>
   </div>
 
-  <div className="bg-gray-800 rounded-xl shadow-lg p-6 border border-indigo-700/30">
-    <h3 className="text-xl font-semibold mb-4 text-indigo-300">Clientes mensuales</h3>
     <GraficoClientesMensuales clientes={clientes} />
-  </div>
 </div>
 
     );
