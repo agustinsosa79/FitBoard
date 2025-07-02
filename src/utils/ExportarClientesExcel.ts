@@ -52,8 +52,8 @@ export function exportarClientesMensuales(
     }
 
     const crecimiento =
-      mesAnterior && mesAnterior.clientes > 0
-        ? ((fila.clientes - mesAnterior.clientes) / mesAnterior.clientes) * 100
+      mesAnterior && mesAnterior.ingreso > 0
+        ? ((fila.ingreso - mesAnterior.ingreso) / mesAnterior.ingreso) * 100
         : null;
 
     return {

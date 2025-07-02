@@ -6,6 +6,9 @@ interface Props {
   onExportar: () => void;
 }
 
+
+
+
 export function FiltrosMetricas({ año, setAño, soloActivos, setSoloActivos, onExportar }: Props) {
   return (
     <section className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 p-6 bg-gray-900 rounded-xl shadow-lg">

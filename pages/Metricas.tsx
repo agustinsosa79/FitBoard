@@ -1,18 +1,13 @@
 import { useState, useContext, useEffect } from "react";
 import { useAuth } from "../src/context/authContext";
 import { PlanesContext } from "../src/context/PlanesContext";
-import { FiltrosMetricas } from "../components/Metricas/FiltrosMetricas";
 import { TablaResumenMensual } from "../components/Metricas/TablaResumenMensual";
-import { getMetricasMensuales } from "../src/utils/getMetricasMensuales"; // función que calcula métricas
+import { calcularMRR, getMetricasMensuales } from "../src/utils/getMetricasMensuales"; // función que calcula métricas
 import { type Clientes } from "../Types/cliente";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { db } from "../src/firebase/config";
-import { exportarClientesMensuales } from '../src/utils/ExportarClientesExcel'; // función para exportar Excel
-
 
 export default function Metricas() {
-    const [año, setAño] = useState(new Date().getFullYear());
-  const [soloActivos, setSoloActivos] = useState(false);
   const [clientes, setClientes] = useState<Clientes[]>([]);
     // Contextos
   const planesContext = useContext(PlanesContext);
@@ -33,33 +28,44 @@ export default function Metricas() {
     return () => unsub();
   }, [user]);
 
+  const soloActivos = true; // o false, según prefieras
+const año = new Date().getFullYear();
+
   const metricas = getMetricasMensuales(clientes, planes, año, soloActivos);
 
-  const handleExportar = () => {
-     exportarClientesMensuales(clientes, planes, año, soloActivos);
-  };
+  // Definir el mes actual (1-based: enero = 1, diciembre = 12)
+  const mesActual = new Date().getMonth();
 
+  const dataTabla = metricas; // Ya incluye todos los campos
+
+  const mrr = calcularMRR(clientes, planes, año, mesActual);
   return (
     <main className="min-h-screen bg-[#181c23] text-white flex flex-col items-center py-12 px-2">
-      <section className="w-full max-w-3xl bg-[#23262e] rounded-2xl shadow-2xl border border-[#23262e]/80 p-0 md:p-10 flex flex-col gap-8">
-        <header className="flex flex-col items-center gap-2 border-b border-[#2d313a] pb-6">
-          <h1 className="text-3xl font-extrabold tracking-tight text-[#e5e7eb]">Métricas Mensuales</h1>
-          <p className="text-[#a1a1aa] text-base font-medium">Visualiza y exporta el resumen mensual de tus clientes</p>
-        </header>
+      <section className="w-full max-w-4xl bg-[#23262e] rounded-3xl shadow-2xl border border-[#23262e]/80 p-0 md:p-10 flex flex-col gap-10">
+      {/* Header */}
+      <header className="flex flex-col items-center gap-2 border-b border-[#2d313a] pb-8">
+        <h1 className="text-4xl font-extrabold tracking-tight text-[#e5e7eb]">Métricas Mensuales</h1>
+        <p className="text-[#a1a1aa] text-lg font-medium">Visualiza y exporta el resumen mensual de tus clientes</p>
+      </header>
 
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <FiltrosMetricas
-            año={año}
-            setAño={setAño}
-            soloActivos={soloActivos}
-            setSoloActivos={setSoloActivos}
-            onExportar={handleExportar}
-          />
+      {/* MRR Card */}
+      <div className="flex justify-center">
+        <div className="bg-gradient-to-r from-amber-500/80 to-yellow-400/80 p-1 rounded-2xl shadow-lg w-full max-w-md">
+        <div className="bg-[#23262e] rounded-xl p-6 flex flex-col items-center">
+          <h2 className="text-white text-xl font-bold">Ingresos Mensuales (MRR)</h2>
+          <p className="text-5xl text-amber-400 mt-2 font-extrabold drop-shadow">${mrr.toLocaleString("es-AR")}</p>
+          <p className="text-sm text-gray-400 text-center mt-2">
+  Ingresos estimados este mes si se mantienen tus clientes actuales activos.
+</p>
         </div>
+        </div>
+      </div>
 
-        <div className="rounded-xl overflow-x-auto shadow-lg border border-[#23262e] bg-[#181c23] p-4">
-          <TablaResumenMensual data={metricas} />
-        </div>
+
+      {/* Tabla de Resumen */}
+      <div className="rounded-2xl overflow-x-auto shadow-lg border border-[#23262e] bg-[#181c23] p-6">
+        <TablaResumenMensual data={dataTabla} />
+      </div>
       </section>
     </main>
   );

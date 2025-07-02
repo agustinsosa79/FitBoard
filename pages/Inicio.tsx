@@ -25,6 +25,7 @@ export default function Inicio() {
     if (!user) {
         return <div className="text-white text-center mt-10">Cargando usuario...</div>;
     }
+    console.log("User ID:", user?.uid);
 
 
     return (
