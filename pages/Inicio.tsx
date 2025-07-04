@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../src/context/authContext";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { db } from "../src/firebase/config";
-import type { Clientes } from "../types/cliente";
+import type { Clientes } from "../src/types/cliente";
 
 export default function Inicio() {
   const [clientes, setClientes] = useState<Clientes[]>([]);

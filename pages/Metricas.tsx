@@ -3,7 +3,7 @@ import { useAuth } from "../src/context/authContext";
 import { PlanesContext } from "../src/context/PlanesContext";
 import { TablaResumenMensual } from "../components/Metricas/TablaResumenMensual";
 import { calcularMRR, getMetricasMensuales } from "../src/utils/getMetricasMensuales";
-import type { Clientes } from "../types/cliente";
+import type { Clientes } from "../src/types/cliente";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { db } from "../src/firebase/config";
 import { doc, getDoc } from "firebase/firestore";

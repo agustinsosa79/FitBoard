@@ -1,4 +1,4 @@
-import { type NuevoPlan, type Plan } from "../types/cliente";
+import { type NuevoPlan, type Plan } from "../src/types/cliente";
 
 export type PlanContextType = {
     planes: Plan[];

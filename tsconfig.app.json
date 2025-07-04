@@ -23,5 +23,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src", "context", "hooks", "utils", "types", "vite-env.d.ts"]
+  "include": ["src", "context", "hooks", "utils", "src/types", "vite-env.d.ts"]
 }

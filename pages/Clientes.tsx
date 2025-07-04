@@ -1,6 +1,6 @@
   import React, { useEffect, useState } from "react";
   import { ClientForm } from "../components/Clientes/ClientForm";
-  import type { Clientes, Form } from "../types/cliente";
+  import type { Clientes, Form } from "../src/types/cliente";
   import { ListaClientes } from "../components/Clientes/ListaClientes";
   import { ClienteModal } from "../components/Clientes/ClienteModal";
   import { PLANES } from "../data/planes";

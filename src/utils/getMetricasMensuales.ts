@@ -1,6 +1,6 @@
-import { type Clientes } from "../../types/cliente";
+import { type Clientes } from "../types/cliente";
 import { parse } from "date-fns";
-import type { Plan } from "../../types/cliente";
+import type { Plan } from "../types/cliente";
 
 interface MesResumen {
   mes: string;

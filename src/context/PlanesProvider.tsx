@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { PlanesContext } from "./PlanesContext";
-import type { Plan, NuevoPlan } from "../../types/cliente";
+import type { Plan, NuevoPlan } from "../types/cliente";
 import type { ReactNode } from "react";
 import { useAuth } from "./authContext";
 import {

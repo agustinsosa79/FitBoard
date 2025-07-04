@@ -3,7 +3,7 @@ import { ClientesNuevos }  from "./Cards/ClientesNuevos";
 import { ClientesInactivos } from "./Cards/ClientesInactivos";
 import { ClientesActivos } from "./Cards/ClientesActivos";
 import {GraficoClientesMensuales} from "./Cards/GraficoClientesMensuales"
-import type { Clientes } from "../../types/cliente";
+import type { Clientes } from "../../src/types/cliente";
 
 interface Props {
   clientes: Clientes[];

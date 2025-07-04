@@ -1,4 +1,4 @@
-import type { Clientes } from "../../../types/cliente";
+import type { Clientes } from "../../../src/types/cliente";
 
 export function ClientesTotales({ clientes }: { clientes: Clientes[] }) {
     return (

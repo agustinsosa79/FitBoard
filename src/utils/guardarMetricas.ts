@@ -2,7 +2,7 @@
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase/config"
 import { getMetricasMensuales } from "./getMetricasMensuales"; // asegurate que esté bien la ruta
-import type { Clientes, Plan } from "../../types/cliente";
+import type { Clientes, Plan } from "../types/cliente";
 
 export async function guardarMetricasDelMes(
   clientes: Clientes[],
