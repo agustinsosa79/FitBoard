@@ -1,4 +1,3 @@
-
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 import { parse } from "date-fns";
 import type { Clientes } from "../../../Types/cliente";
@@ -26,8 +25,10 @@ export function GraficoClientesMensuales({ clientes }: Props) {
     });
 
     return (
-        <div className="bg-gray-950 p-4 rounded-lg shadow-md mt-6">
-            <h3 className="text-lg font-semibold mb-2 text-white">Clientes nuevos por mes ({esteAnio})</h3>
+        <div className="w-full max-w-4xl mx-auto bg-gray-950 p-4 sm:p-6 rounded-lg shadow-md mt-6">
+            <h3 className="text-lg font-semibold mb-4 text-white text-center sm:text-left">
+                Clientes nuevos por mes ({esteAnio})
+            </h3>
             <ResponsiveContainer width="100%" height={250}>
                 <BarChart data={data}>
                     <CartesianGrid strokeDasharray="3" stroke="#222" vertical={false} />

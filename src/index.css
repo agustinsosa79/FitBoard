@@ -2,5 +2,5 @@
 
 html,
 body {
-  overflow-y: scroll; /* Siempre muestra la scrollbar */
+  overflow-y: hidden; /* Siempre muestra la scrollbar */
 }

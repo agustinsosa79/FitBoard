@@ -4,7 +4,7 @@
   import { ListaClientes } from "../components/Clientes/ListaClientes";
   import { ClienteModal } from "../components/Clientes/ClienteModal";
   import { PLANES } from "../data/planes";
-  import { parse, differenceInDays, format, parseISO } from "date-fns";
+  import { parse, format, parseISO } from "date-fns";
   import { ModalPago } from "../components/Clientes/ModalPago";
   import { useContext } from "react";
   import { PlanesContext } from "../src/context/PlanesContext";
@@ -13,6 +13,7 @@
   import { collection, query, where, onSnapshot } from "firebase/firestore";
   import { db } from "../src/firebase/config";
   import { doc, deleteDoc, updateDoc } from "firebase/firestore";
+  import {arrayUnion} from "firebase/firestore";
 
 
   const normalizar = (texto: string | undefined | null) => {
@@ -79,26 +80,51 @@
       };
 
   const actualizarFechaPago = async (data: { nuevaFecha: string; }) => {
-      if (!selectClient) return;
+  if (!selectClient) return;
 
-      const fechaPago = parseISO(data.nuevaFecha);
+  // Fecha nueva de pago que ingresa el usuario (ej: 03/07/25)
+  const fechaPago = parseISO(data.nuevaFecha);
 
-        const planDelCliente = planes.find(p => p.nombre === selectClient.plan);
-        const duracionMeses = planDelCliente ? parseInt(planDelCliente.duracion) : 1;
+  const planDelCliente = planes.find(p => p.nombre === selectClient.plan);
+  const duracionMeses = planDelCliente ? parseInt(planDelCliente.duracion) : 1;
 
-        const nuevaFechaVencimiento = new Date(fechaPago);
-        nuevaFechaVencimiento.setMonth(nuevaFechaVencimiento.getMonth() + duracionMeses);
+  // Fecha base para vencimiento: última fecha de pago o fecha de inicio
+  const fechaBase = selectClient.ultimaFechaPago 
+    ? parse(selectClient.ultimaFechaPago, "dd/MM/yy", new Date()) 
+    : parse(selectClient.fechaDeInicio, "dd/MM/yy", new Date());
 
-      const clienteActualizado = {
-          ...selectClient,
-          ultimaFechaPago: format(fechaPago, "dd/MM/yy"),
-            fechaVencimiento: format(nuevaFechaVencimiento, "dd/MM/yy"),
-      };
+  // Calculamos nueva fecha de vencimiento sumando duración
+  const nuevaFechaVencimiento = new Date(fechaBase);
+  nuevaFechaVencimiento.setMonth(nuevaFechaVencimiento.getMonth() + duracionMeses);
 
-      await handleEdit(clienteActualizado); 
-      setSelectClient(clienteActualizado);
-      setMostrarModalPago(false);
-  }; 
+  // Calculamos si está activo
+  const hoy = new Date();
+  const estaActivo = hoy <= nuevaFechaVencimiento;
+
+  const clienteActualizado = {
+    ...selectClient,
+    ultimaFechaPago: format(fechaPago, "dd/MM/yy"),
+    fechaVencimiento: format(nuevaFechaVencimiento, "dd/MM/yy"),
+    activo: estaActivo,
+  };
+
+  await handleEdit(clienteActualizado);
+  setSelectClient(clienteActualizado);
+
+  const ref = doc(db, "clientes", selectClient.id);
+  await updateDoc(ref, {
+    pagos: arrayUnion({
+      fecha: format(fechaPago, "dd/MM/yy"),
+      monto: planDelCliente?.precio || 0,
+    }),
+    activo: estaActivo,
+    fechaVencimiento: format(nuevaFechaVencimiento, "dd/MM/yy"),
+  });
+
+  setMostrarModalPago(false);
+};
+
+
 
     useEffect(() => {
     const hoy = new Date();
@@ -106,9 +132,8 @@
     clientes.forEach(async (cliente) => {
       if (!cliente.ultimaFechaPago) return;
 
-      const fechaPago = parse(cliente.ultimaFechaPago, 'dd/MM/yy', new Date());
-      const diasSinPago = differenceInDays(hoy, fechaPago);
-      const estaActivo = diasSinPago <= 30;
+      const vencimiento = parse(cliente.fechaVencimiento!, 'dd/MM/yy', new Date());
+const estaActivo = hoy <= vencimiento;
 
       if (cliente.activo !== estaActivo) {
         try {
@@ -132,62 +157,85 @@
   };
 
       const addClient = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const emailYaExiste = clientes.some(
-      (c) => c.email.trim().toLowerCase() === form.email.trim().toLowerCase()
-    );
-    if (emailYaExiste) {
-      setForm(prev => ({ ...prev, email: '' })); 
-      setErrorPrincipal("Ese email ya está en uso por otro cliente.");
-      setTimeout(() => {
-        setErrorPrincipal(null);
-      }, 3000);
-      return;
-    }
+  // Forzar fecha de inicio a hoy (dd/MM/yy)
+  const hoy = new Date();
+  const fechaHoyStr = format(hoy, "dd/MM/yy");
 
-    if (!user) {
-      setErrorPrincipal("No estás autenticado.");
-      return;
-    }
-
-  const fechaInicio = parseISO(form.fechaDeInicio + "T12:00:00");
-  if (isNaN(fechaInicio.getTime())) {
-    setErrorPrincipal("La fecha de inicio no es válida");
+  // Validaciones básicas
+  if (!form.nombre.trim() || form.nombre.trim().length > 20) {
+    setErrorPrincipal("El nombre es obligatorio y debe tener máximo 20 caracteres.");
     return;
   }
 
+  if (!form.telefono.trim() || form.telefono.trim().length > 20) {
+    setErrorPrincipal("El teléfono es obligatorio y debe tener máximo 20 caracteres.");
+    return;
+  }
+
+  if (!Number.isInteger(Number(form.edad)) || Number(form.edad) < 1 || Number(form.edad) > 120) {
+    setErrorPrincipal("La edad debe ser un número válido entre 1 y 120.");
+    return;
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(form.email.trim())) {
+    setErrorPrincipal("El email no es válido.");
+    return;
+  }
+
+  // Email duplicado
+  const emailYaExiste = clientes.some(
+    (c) => c.email.trim().toLowerCase() === form.email.trim().toLowerCase()
+  );
+  if (emailYaExiste) {
+    setForm(prev => ({ ...prev, email: '' })); 
+    setErrorPrincipal("Ese email ya está en uso por otro cliente.");
+    setTimeout(() => {
+      setErrorPrincipal(null);
+    }, 3000);
+    return;
+  }
+
+  if (!user) {
+    setErrorPrincipal("No estás autenticado.");
+    return;
+  }
+
+  // Plan y fechas
   const planSeleccionado = planes.find(p => p.nombre === form.plan);
   const duracionMeses = planSeleccionado ? parseInt(planSeleccionado.duracion) : 1;
+  const fechaInicio = hoy; // Forzado a hoy
 
   const fechaVencimiento = new Date(fechaInicio);
   fechaVencimiento.setMonth(fechaInicio.getMonth() + duracionMeses);
 
-    try {
-      const nuevoCliente = {
-        nombre: form.nombre,
-        email: form.email,
-        edad: Number(form.edad),
-        telefono: form.telefono,
-        fechaDeInicio:  format(fechaInicio, "dd/MM/yy"),
-        fechaVencimiento: fechaVencimiento ? format(fechaVencimiento, "dd/MM/yy") : "",
-        activo: form.activo,
-        ultimaFechaPago:  format(new Date(), "dd/MM/yy"),
-        plan: form.plan?.trim() || (planes.length > 0 ? planes[0].nombre : ""),
-        userId: user.uid, 
-      };
+  try {
+    const nuevoCliente = {
+      nombre: form.nombre.trim(),
+      email: form.email.trim(),
+      edad: Number(form.edad),
+      telefono: form.telefono.trim(),
+      fechaDeInicio: fechaHoyStr,
+      fechaVencimiento: fechaVencimiento ? format(fechaVencimiento, "dd/MM/yy") : "",
+      activo: true,
+      ultimaFechaPago: fechaHoyStr,
+      plan: form.plan?.trim() || (planes.length > 0 ? planes[0].nombre : ""),
+      userId: user.uid,
+    };
 
-      await guardarCliente(nuevoCliente);
+    await guardarCliente(nuevoCliente);
 
-      // reset form
-      resetForm();
-      setAgregar(false);
-      setErrorPrincipal(null);
-    } catch (err) {
-      console.error(err);
-      setErrorPrincipal("Error al guardar el cliente.");
-    }
-  };
+    resetForm();
+    setAgregar(false);
+    setErrorPrincipal(null);
+  } catch (err) {
+    console.error(err);
+    setErrorPrincipal("Error al guardar el cliente.");
+  }
+};
+
 
       const handleDelete = async (id: string) => {
     try {

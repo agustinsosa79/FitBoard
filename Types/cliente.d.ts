@@ -9,6 +9,7 @@ fechaDeInicio: string
 activo: boolean
 ultimaFechaPago: string
 fechaVencimiento?: string
+pagos?: Pago[]
 userId: string 
 }
 

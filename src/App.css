@@ -1,4 +1,17 @@
 html,
 body {
-  overflow-y: scroll; /* Siempre muestra la scrollbar */
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+html {
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
+main {
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
