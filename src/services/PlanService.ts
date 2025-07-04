@@ -1,6 +1,6 @@
 import { collection, query, where, getDocs, addDoc, deleteDoc, doc } from "firebase/firestore";
 import { db } from "../firebase/config";
-import type { Plan, NuevoPlan } from "../../Types/cliente";
+import type { Plan, NuevoPlan } from "../../types/cliente";
 
 export const obtenerPlanesPorUsuario = async (userId: string): Promise<Plan[]> => {
   const q = query(collection(db, "planes"), where("userId", "==", userId));

@@ -1,4 +1,4 @@
-import type { Clientes } from "../../Types/cliente"
+import type { Clientes } from "../../types/cliente"
 import { ClienteItem } from "./ClienteItem";
 import { useState } from "react";
 

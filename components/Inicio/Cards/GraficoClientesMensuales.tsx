@@ -1,6 +1,6 @@
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 import { parse } from "date-fns";
-import type { Clientes } from "../../../Types/cliente";
+import type { Clientes } from "../../../types/cliente";
 
 interface Props {
     clientes: Clientes[];

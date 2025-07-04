@@ -1,7 +1,7 @@
 import { writeFile, utils } from "xlsx";
 import { parse } from "date-fns";
-import type { Clientes } from "../../Types/cliente";
-import type { Plan } from "../../Types/cliente";
+import type { Clientes } from "../../types/cliente";
+import type { Plan } from "../../types/cliente";
 
 export function exportarClientesMensuales(
   clientes: Clientes[],

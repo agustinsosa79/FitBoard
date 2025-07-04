@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import type { ClienteFormProps } from "../../Types/ClienteFormProps";
+import type { ClienteFormProps } from "../../types/ClienteFormProps";
 import { PlanesContext } from "../../src/context/PlanesContext";
 
 export function ClientForm({
