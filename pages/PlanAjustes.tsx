@@ -38,7 +38,7 @@ export default function PlanAjustes() {
   };
 
   return (
-    <div className="flex flex-col lg:items-center pt-15  bg-gray-950 ">
+    <div className="flex flex-col lg:items-center pt-15  bg-gray-950 h-270 ">
       <div className="w-full max-w-lg">
         {/* Header */}
         <h1 className="text-4xl font-extrabold text-amber-400 mb-6 text-center tracking-tight drop-shadow">

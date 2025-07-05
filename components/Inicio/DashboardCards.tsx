@@ -23,7 +23,7 @@ export default function DashboardCards({clientes}: Props) {
     <span className="text-gray-300">Resumen general</span>
   </h2>
 
-  <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 pl-1 mb-2">
+  <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 pl-4 mb-2">
     <div className="transition-transform hover:scale-105 h-full w-full flex">
       <div className="flex-1 flex flex-col justify-stretch h-full w-0">
         <ClientesTotales clientes={clientes} />
