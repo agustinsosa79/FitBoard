@@ -41,7 +41,7 @@ export function TablaResumenMensual({ data }: Props) {
 
   return (
     <div className="rounded-xl shadow-xl border border-gray-800 bg-[#15181e] p-2 overflow-x-auto">
-      <div className="flex justify-end mb-2">
+      <div className="flex justify-start mb-2">
         <button
           onClick={handleExportarTabla}
           className="bg-amber-500 hover:bg-amber-600 text-white font-bold py-1 px-4 rounded shadow text-xs"

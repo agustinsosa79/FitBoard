@@ -17,7 +17,7 @@ export function ClientesNuevos({ clientes }: Props) {
     });
     
     return (
-        <div className="relative bg-gradient-to-br from-green-400 via-green-500 to-green-700 text-white p-5 rounded-2xl shadow-xl w-35 h-40 flex flex-col justify-center items-center overflow-hidden border-2 border-green-200">
+        <div className="relative bg-gradient-to-br from-green-400 via-green-500 lg:w-55 lg:h-40 to-green-700 text-white p-5 rounded-2xl shadow-xl w-35 h-40 flex flex-col justify-center items-center overflow-hidden border-2 border-green-200 md:w-50">
             <div className="absolute top-0 right-0 m-2 opacity-20 text-7xl pointer-events-none select-none">
             <svg width="64" height="64" fill="none" viewBox="0 0 24 24">
                 <circle cx="12" cy="12" r="10" stroke="white" strokeWidth="2" />

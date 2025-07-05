@@ -279,13 +279,13 @@ const estaActivo = hoy <= vencimiento;
         return <div className="text-white text-center mt-10">Cargando usuario...</div>;
       }
       return (
-          <div className="min-h-screen bg-gray-900 py-10 px-4 flex flex-col items-center">
+          <div className="min-h-screen bg-gray-900 py-10 px-4 flex flex-col items-center pt-15">
   <div className="max-w-2xl w-full">
     <div className="mb-8 flex flex-col items-start max-w-2xl">
       <h1 className="text-4xl font-extrabold text-white mb-2 tracking-tight drop-shadow-md">
         Clientes
       </h1>
-      <p className="text-lg text-white font-semibold pl-4 border-l-4 border-white bg-gray-950 rounded-r-lg py-2 px-4 shadow-md max-w-full">
+      <p className="text-lg text-white font-semibold pl-4 border-l-4 border-white bg-gray-950 rounded-r-lg py-2 px-10 shadow-md max-w-full">
         Aquí podés gestionar los clientes de tu gimnasio.
       </p>
     </div>

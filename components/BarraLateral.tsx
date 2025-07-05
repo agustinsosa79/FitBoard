@@ -96,7 +96,7 @@ export default function BarraLateral({ abierto, cerrarMenu }: Props) {
       {/* Overlay móvil */}
       {abierto && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
+          className="fixed inset-0 bg-black/60 z-30 md:hidden"
           onClick={cerrarMenu}
           aria-hidden="true"
         />

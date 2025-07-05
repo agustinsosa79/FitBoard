@@ -34,7 +34,7 @@ export default function Inicio() {
       px-0      /* Agrega padding por defecto, puedes ajustarlo */
       py-0
       m-0  
-      sm:px-6      /* padding en tablet, ajusta según necesites */
+      sm:px-0      /* padding en tablet, ajusta según necesites */
       lg:px-0    /* padding en desktop, ajusta según necesites */
       sm:py-0
       lg:py-0

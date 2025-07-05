@@ -34,18 +34,18 @@ export function ClientForm({
 
   return (
     <>
-    <div className="w-full max-w-md bg-gray-950 rounded-2xl shadow-xl border border-gray-800 p-10 mt-12 h-auto transition-all duration-300">
+    <div className="w-full max-w-md bg-gray-950 rounded-2xl shadow-xl border border-gray-800 p-7 lg:p-10 mt-12 h-auto transition-all duration-300">
       <div className="flex items-center gap-4 mb-6 w-full border-b border-gray-700 pb-5">
-        <div className="flex items-center justify-center w-12 h-12 rounded-full bg-gray-900 border border-gray-800 shadow-inner">
-          <svg className="w-7 h-7 text-green-500" fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24">
+        <div className="flex items-center justify-center lg:w-12 lg:h-12 rounded-full bg-gray-900 border border-gray-800 shadow-inner">
+          <svg className="w-8 h-8 text-green-500 lg:w-7 lg:h-7" fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
           </svg>
         </div>
-        <h2 className="text-2xl font-extrabold tracking-wide text-white drop-shadow-sm">Gestión de Clientes</h2>
+        <h2 className="lg:text-2xl text-2xl font-extrabold tracking-wide text-white drop-shadow-sm">Gestión de Clientes</h2>
         <button
           onClick={handleToggleAgregar}
           type="button"
-          className={`ml-auto px-6 py-2.5 rounded-lg font-semibold shadow-md border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-500/60
+          className={`ml-auto lg:px-6 px-3 py-2.5 rounded-lg font-semibold shadow-md border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-500/60
             ${agregar
               ? "bg-gray-800 text-gray-200 border-gray-700 hover:bg-gray-700 hover:text-white"
               : "bg-green-600 text-white border-green-700 hover:bg-green-700"
