@@ -25,7 +25,7 @@ export function Login() {
       <div className="flex justify-center mb-6">
         <div className="rounded-full shadow-lg border flex items-center justify-center">
         <img
-          src="../public/fitcore.png"
+          src="/fitcore.png"
           alt="logo-fitboard"
           className="w-24 h-24 object-cover rounded-full"
         />
