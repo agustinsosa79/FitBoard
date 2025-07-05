@@ -9,7 +9,7 @@ export function ClientesActivos({ clientes }: Props) {
   console.log("activos", activos);
 
   return (
-    <div className="relative bg-gradient-to-br from-blue-400 via-blue-500 to-blue-700 text-white p-6 rounded-2xl shadow-xl w-full sm:w-60 h-40 flex flex-col justify-center items-center overflow-hidden border-2 border-blue-200">
+    <div className="relative bg-gradient-to-br  from-blue-400 via-blue-500 to-blue-700 text-white p-6 rounded-2xl shadow-xl w-35 sm:w-60 h-40 flex flex-col justify-center items-center overflow-hidden border-2 border-blue-200">
   <div className="absolute top-0 right-0 m-2 opacity-20 text-7xl pointer-events-none select-none">
     <svg width="64" height="64" fill="none" viewBox="0 0 24 24">
       <circle cx="12" cy="12" r="10" stroke="white" strokeWidth="2" />

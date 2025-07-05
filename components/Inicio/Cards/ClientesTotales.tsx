@@ -2,7 +2,7 @@ import type { Clientes } from "../../../src/types/cliente";
 
 export function ClientesTotales({ clientes }: { clientes: Clientes[] }) {
     return (
-        <div className="relative bg-gradient-to-br from-gray-200 via-gray-300 to-gray-400 text-gray-900 p-6 rounded-2xl shadow-xl w-60 h-40 flex flex-col justify-center items-center overflow-hidden border-2 border-gray-300">
+        <div className="relative bg-gradient-to-br from-gray-200 via-gray-300 to-gray-400 text-gray-900 p-6 rounded-2xl shadow-xl w-35 h-40 flex flex-col justify-center items-center overflow-hidden border-2 border-gray-300">
             <div className="absolute top-0 right-0 m-2 opacity-20 text-7xl pointer-events-none select-none">
             <svg width="64" height="64" fill="none" viewBox="0 0 24 24">
             <circle cx="12" cy="12" r="10" stroke="gray" strokeWidth="2" />

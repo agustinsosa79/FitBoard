@@ -28,7 +28,7 @@ export default function LayoutPanel() {
 
       {/* Contenido principal: ml-72 para desktop empuja el contenido al lado de la barra lateral */}
       {/* flex-1 asegura que main ocupe el espacio restante y overflow-y-auto manejará su propio scroll si es necesario */}
-      <main className="flex-1 ml-0 md:ml-72 overflow-y-auto overflow-x-hidden p-0 bg-gray-100">
+      <main className="flex-1 ml-0 md:ml-72 overflow-y-auto overflow-x-hidden p-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700">
         <Outlet />
       </main>
     </div>
